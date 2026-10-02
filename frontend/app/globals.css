@@ -1,0 +1,385 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --bg-canvas: #08090d;
+  --bg-surface: #10121a;
+  --bg-surface-hover: #161924;
+  --bg-elevated: #1b1e2b;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.16);
+  --border-focus: rgba(16, 185, 129, 0.5);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --accent-emerald: #10b981;
+  --accent-emerald-glow: rgba(16, 185, 129, 0.25);
+  --accent-violet: #8b5cf6;
+  --accent-amber: #f59e0b;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --background: var(--vng-background);
+  --foreground: var(--vng-foreground);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: var(--vng-primary);
+  --primary-foreground: var(--vng-primary-foreground);
+  --secondary: var(--vng-secondary);
+  --secondary-foreground: var(--vng-secondary-foreground);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: var(--vng-danger);
+  --border: var(--vng-border);
+  --input: oklch(0.922 0 0);
+  --ring: var(--vng-primary);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: var(--vng-radius-lg);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+  --vng-background: #ffffff;
+  --vng-foreground: #09090b;
+  --vng-border: #e4e4e7;
+  --vng-primary: #09090b;
+  --vng-primary-hover: #27272a;
+  --vng-primary-foreground: #ffffff;
+  --vng-secondary: #f4f4f5;
+  --vng-secondary-foreground: #09090b;
+  --vng-danger: #dc2626;
+  --vng-success: #16a34a;
+  --vng-warning: #eab308;
+  --vng-radius-sm: 4px;
+  --vng-radius-md: 6px;
+  --vng-radius-lg: 8px;
+  --vng-space-xs: 0.5rem;
+  --vng-space-sm: 0.75rem;
+  --vng-space-md: 1rem;
+  --vng-space-lg: 2rem;
+  --vng-transition-speed: 150ms;
+  --vng-transition-speed-slow: calc(var(--vng-transition-speed) * 2);
+}
+
+@theme inline {
+  --color-canvas: var(--bg-canvas);
+  --color-surface: var(--bg-surface);
+  --color-surface-hover: var(--bg-surface-hover);
+  --color-elevated: var(--bg-elevated);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-hover: var(--border-hover);
+  --color-emerald-accent: var(--accent-emerald);
+  --color-violet-accent: var(--accent-violet);
+  --color-amber-accent: var(--accent-amber);
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: var(--vng-radius-sm);
+  --radius-md: var(--vng-radius-md);
+  --radius-lg: var(--vng-radius-lg);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-vng-primary: var(--vng-primary);
+  --color-vng-secondary: var(--vng-secondary);
+  --color-vng-danger: var(--vng-danger);
+  --color-vng-success: var(--vng-success);
+  --color-vng-warning: var(--vng-warning);
+  --ring: var(--ring);
+  --destructive: var(--destructive);
+  --secondary-foreground: var(--secondary-foreground);
+  --secondary: var(--secondary);
+  --primary-foreground: var(--primary-foreground);
+  --primary: var(--primary);
+  --border: var(--border);
+  --foreground: var(--foreground);
+  --background: var(--background);
+  --vng-transition-speed-slow: var(--vng-transition-speed-slow);
+  --vng-transition-speed: var(--vng-transition-speed);
+  --vng-space-lg: var(--vng-space-lg);
+  --vng-space-md: var(--vng-space-md);
+  --vng-space-sm: var(--vng-space-sm);
+  --vng-space-xs: var(--vng-space-xs);
+  --vng-radius-lg: var(--vng-radius-lg);
+  --vng-radius-md: var(--vng-radius-md);
+  --vng-radius-sm: var(--vng-radius-sm);
+  --color-vng-secondary-foreground: var(--vng-secondary-foreground);
+  --color-vng-primary-foreground: var(--vng-primary-foreground);
+  --color-vng-primary-hover: var(--vng-primary-hover);
+  --color-vng-border: var(--vng-border);
+  --color-vng-foreground: var(--vng-foreground);
+  --color-vng-background: var(--vng-background);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  overflow-x: hidden;
+}
+
+/* ── Emil Kowalski: Component Press Feedback ───────────────────────────────
+   GPU-only properties (transform, opacity) for hardware-accelerated feedback.
+   Hover gates use @media (hover: hover) so touch taps don't fire false hovers. */
+button,
+a[role="button"],
+.interactive-press {
+  /* Only animate transform + opacity — skip layout/paint entirely */
+  transition:
+    transform 140ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity   140ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+button:active,
+a[role="button"]:active,
+.interactive-press:active {
+  transform: scale(0.97);
+}
+
+/* Hover lifts — gated so touch screens don't get stuck in hover state */
+@media (hover: hover) and (pointer: fine) {
+  .hover-lift {
+    transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1),
+                box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Emerald card glow on hover */
+  .hover-glow:hover {
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.25),
+                0 8px 24px -4px rgba(16, 185, 129, 0.12);
+  }
+
+  /* Subtle scale for icon buttons */
+  .hover-scale:hover {
+    transform: scale(1.06);
+  }
+}
+
+/* Custom Scrollbar for Dashboard & Transcripts */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Ambient Radial Mesh Background */
+.ambient-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15) 0%, rgba(16, 185, 129, 0.08) 35%, transparent 70%);
+}
+
+.hero-mesh {
+  background-image: 
+    radial-gradient(at 15% 20%, rgba(16, 185, 129, 0.12) 0px, transparent 50%),
+    radial-gradient(at 85% 15%, rgba(139, 92, 246, 0.14) 0px, transparent 50%),
+    radial-gradient(at 50% 75%, rgba(245, 158, 11, 0.08) 0px, transparent 60%);
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: rgba(16, 18, 26, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+}
+
+.glass-pill {
+  background: rgba(18, 20, 30, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Interactive Link Underline ──────────────────────────────────────────────
+   Animated underline that reveals on hover from left to right via clip-path.
+   Per Emil's clip-path recipe — GPU-composited. */
+.link-hover-underline {
+  position: relative;
+  display: inline-block;
+}
+.link-hover-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 250ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .link-hover-underline:hover::after {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ── Range Slider Enhancement ────────────────────────────────────────────── */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid #059669;
+  cursor: grab;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1),
+              box-shadow 140ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+}
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(0.95);
+  cursor: grabbing;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid #059669;
+  cursor: grab;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.dark {
+  --background: var(--vng-background);
+  --foreground: var(--vng-foreground);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: var(--vng-primary);
+  --primary-foreground: var(--vng-primary-foreground);
+  --secondary: var(--vng-secondary);
+  --secondary-foreground: var(--vng-secondary-foreground);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: var(--vng-danger);
+  --border: var(--vng-border);
+  --input: oklch(1 0 0 / 15%);
+  --ring: var(--vng-primary);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+  --vng-background: #09090b;
+  --vng-foreground: #ffffff;
+  --vng-border: #27272a;
+  --vng-primary: #ffffff;
+  --vng-primary-hover: #e4e4e7;
+  --vng-primary-foreground: #09090b;
+  --vng-secondary: #27272a;
+  --vng-secondary-foreground: #ffffff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
