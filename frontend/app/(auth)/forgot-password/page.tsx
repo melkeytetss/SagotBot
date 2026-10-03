@@ -13,10 +13,11 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email || !recaptchaToken) return;
     setLoading(true);
     setAuthStatus("loading");
 
@@ -103,13 +104,16 @@ export default function ForgotPasswordPage() {
             </div>
 
             <div className="pt-2">
-              <RecaptchaWidget action="forgot_password" />
+              <RecaptchaWidget
+                action="forgot_password"
+                onVerify={(token) => setRecaptchaToken(token)}
+              />
             </div>
 
             <CandyButton
               type="submit"
-              disabled={loading}
-              className="w-full py-3 px-4 text-sm font-bold flex items-center justify-center gap-2 disabled:opacity-50 mt-6 shadow-xl shadow-emerald-500/20"
+              disabled={loading || !recaptchaToken}
+              className="w-full py-3 px-4 text-sm font-bold flex items-center justify-center gap-2 mt-6 shadow-xl shadow-emerald-500/20"
             >
               {loading ? (
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

@@ -24,6 +24,7 @@ export default function SignUpPage() {
   const [businessName, setBusinessName] = useState("");
   const [businessType, setBusinessType] = useState<"dental" | "salon" | "restaurant" | "general">("dental");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -236,7 +237,7 @@ export default function SignUpPage() {
               </div>
             </div>
 
-            <RecaptchaWidget action="signup" />
+            <RecaptchaWidget action="signup" onVerify={(token) => setRecaptchaToken(token)} />
 
             <div className="flex gap-2.5 pt-2">
               <button
@@ -250,8 +251,8 @@ export default function SignUpPage() {
               <CandyButton
                 type="submit"
                 variant="black"
-                disabled={loading}
-                className="flex-1 py-2.5 px-4 text-xs font-semibold flex items-center justify-center gap-2 disabled:opacity-50"
+                disabled={loading || !recaptchaToken}
+                className="flex-1 py-2.5 px-4 text-xs font-semibold flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

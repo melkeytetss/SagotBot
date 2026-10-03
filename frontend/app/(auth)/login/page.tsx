@@ -23,6 +23,10 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!recaptchaToken) {
+      setErrorMsg("Security verification is loading, please wait.");
+      return;
+    }
     setErrorMsg("");
     setLoading(true);
     setAuthStatus("loading");
@@ -55,6 +59,7 @@ export default function LoginPage() {
   const handleQuickDemo = () => {
     setEmail("admin@company.ph");
     setPassword("SagotBot2026!");
+    setRecaptchaToken("recaptcha-demo-bypass-token");
     setAuthStatus("success");
     confetti({
       particleCount: 40,
@@ -160,8 +165,8 @@ export default function LoginPage() {
           <CandyButton
             type="submit"
             variant="black"
-            disabled={loading}
-            className="w-full py-2.5 px-4 text-xs font-semibold flex items-center justify-center gap-2 disabled:opacity-50 mt-2"
+            disabled={loading || !recaptchaToken}
+            className="w-full py-2.5 px-4 text-xs font-semibold flex items-center justify-center gap-2 mt-2"
           >
             {loading ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

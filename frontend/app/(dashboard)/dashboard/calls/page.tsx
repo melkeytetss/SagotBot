@@ -18,6 +18,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { FlipText } from "@/components/ui/flip-text";
 import { CandyButton } from "@/components/ui/candy-button";
+import { useIndustry } from "@/context/industry-context";
 
 interface CallRecord {
   id: string;
@@ -201,6 +202,7 @@ const CALL_LOGS: CallRecord[] = [
 ];
 
 export function CallLogsPage() {
+  const { preset } = useIndustry();
   const [search, setSearch] = useState("");
   const [languageFilter, setLanguageFilter] = useState<string>("All");
   const [statusFilter, setStatusFilter] = useState<string>("All");
@@ -286,7 +288,9 @@ export function CallLogsPage() {
     setTimeout(() => setCopiedTranscript(false), 2000);
   };
 
-  const filteredLogs = CALL_LOGS.filter((call) => {
+  const allLogs = (preset.calls && preset.calls.length > 0 ? (preset.calls as unknown as CallRecord[]) : CALL_LOGS);
+
+  const filteredLogs = allLogs.filter((call) => {
     const q = search.toLowerCase();
     const matchesSearch =
       call.caller.toLowerCase().includes(q) ||
@@ -320,7 +324,7 @@ export function CallLogsPage() {
             </FlipText>
           </div>
           <p className="text-xs text-zinc-500 mt-1">
-            Review turn-by-turn Taglish audio transcripts, caller intents, and automated Google Calendar bookings.
+            Review turn-by-turn Taglish audio transcripts, caller intents, and bookings for {preset.businessName}.
           </p>
         </div>
       </div>
@@ -333,7 +337,7 @@ export function CallLogsPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by caller name, phone number, or procedure..."
+            placeholder="Search by caller name, phone number, or inquiry..."
             className="w-full pl-10 pr-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 shadow-2xs"
           />
         </div>
@@ -532,7 +536,7 @@ export function CallLogsPage() {
                 {/* AI Summary Card */}
                 <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-1.5">
                   <span className="text-[10px] font-mono uppercase text-blue-700 font-semibold tracking-wider">
-                    AI Clinical Summary
+                    AI Call Summary
                   </span>
                   <p className="text-xs text-zinc-700 leading-relaxed">{selectedCall.summary}</p>
                 </div>
@@ -543,7 +547,7 @@ export function CallLogsPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-xs font-semibold text-zinc-950">
                         <Calendar className="w-4 h-4 text-blue-600" />
-                        <span>Google Calendar Appointment Added</span>
+                        <span>Calendar Booking Confirmed</span>
                       </div>
                       <span className="text-[9px] font-mono bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-medium">
                         Confirmed

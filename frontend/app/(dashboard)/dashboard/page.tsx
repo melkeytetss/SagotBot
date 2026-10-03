@@ -7,20 +7,19 @@ import {
   CalendarCheck,
   TrendingUp,
   Clock,
-  ArrowUpRight,
-  Sparkles,
   PhoneIncoming,
   Calendar,
   CheckCircle2,
   ChevronRight,
 } from "lucide-react";
-import { formatPHP } from "@/lib/utils";
-import { GlowBorderCard } from "@/components/ui/glow-border-card";
 import { StatsCounter } from "@/components/ui/stats-counter";
 import { CandyButton } from "@/components/ui/candy-button";
 import { FlipText } from "@/components/ui/flip-text";
+import { useIndustry } from "@/context/industry-context";
 
 export default function DashboardOverviewPage() {
+  const { preset, businessName } = useIndustry();
+
   const kpis = [
     {
       title: "Inbound Calls Handled",
@@ -29,20 +28,14 @@ export default function DashboardOverviewPage() {
       change: "+18.4%",
       period: "vs last 7 days",
       icon: PhoneCall,
-      accent: "text-emerald-400",
-      bg: "bg-emerald-500/10",
-      gradientColors: ["#10b981", "#059669", "#34d399", "#10b981"],
     },
     {
-      title: "Appointments Booked",
+      title: "Bookings Confirmed",
       numericValue: 187,
       duration: 1.5,
       change: "54.6%",
       period: "call conversion rate",
       icon: CalendarCheck,
-      accent: "text-teal-400",
-      bg: "bg-teal-500/10",
-      gradientColors: ["#06b6d4", "#0ea5e9", "#3b82f6", "#06b6d4"],
     },
     {
       title: "Revenue Booked",
@@ -51,14 +44,11 @@ export default function DashboardOverviewPage() {
       duration: 2.0,
       decimals: 0,
       change: "+₱42,000",
-      period: "recovered after-hours",
+      period: "after-hours recovered",
       icon: TrendingUp,
-      accent: "text-emerald-300",
-      bg: "bg-emerald-500/10",
-      gradientColors: ["#10b981", "#f59e0b", "#10b981", "#059669"],
     },
     {
-      title: "Reception Hours Saved",
+      title: "Staff Hours Saved",
       numericValue: 48.5,
       suffix: " hrs",
       decimals: 1,
@@ -66,70 +56,23 @@ export default function DashboardOverviewPage() {
       change: "100%",
       period: "answered within 1 ring",
       icon: Clock,
-      accent: "text-purple-400",
-      bg: "bg-purple-500/10",
-      gradientColors: ["#8b5cf6", "#a855f7", "#ec4899", "#8b5cf6"],
-    },
-  ];
-
-  const recentCalls = [
-    {
-      id: "call-1",
-      caller: "Maria Clara Santos",
-      phone: "+63 917 555 0192",
-      intent: "Teeth Cleaning (Oral Prophylaxis)",
-      duration: "1m 45s",
-      booked: true,
-      time: "10 mins ago",
-      summary: "Patient booked cleaning for tomorrow 2:00 PM. Confirmed HMO accreditation (Maxicare).",
-    },
-    {
-      id: "call-2",
-      caller: "Juan Dela Cruz",
-      phone: "+63 918 223 9910",
-      intent: "Toothache Emergency",
-      duration: "2m 10s",
-      booked: true,
-      time: "32 mins ago",
-      summary: "Severe pain in lower molar. Scheduled emergency extraction slot with Doc at 5:00 PM today.",
-    },
-    {
-      id: "call-3",
-      caller: "Grace Tan",
-      phone: "+63 920 882 1144",
-      intent: "Braces Adjustment Inquiry",
-      duration: "1m 15s",
-      booked: false,
-      time: "1 hr ago",
-      summary: "Inquired about monthly adjustment fees. Advised to bring panoramic X-ray.",
-    },
-    {
-      id: "call-4",
-      caller: "Atty. Rafael Ramos",
-      phone: "+63 917 441 0021",
-      intent: "Dental Teeth Whitening",
-      duration: "1m 50s",
-      booked: true,
-      time: "2 hrs ago",
-      summary: "Booked laser teeth whitening promo for Saturday 11:00 AM. Sent SMS confirmation.",
     },
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Top Banner & Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <FlipText
-              className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-950"
-              duration={1.8}
-            >
-              Clinic Overview
-            </FlipText>
-          </div>
+          <FlipText
+            className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-950"
+            duration={1.8}
+          >
+            Business Overview
+          </FlipText>
           <p className="text-xs text-zinc-500 mt-1">
-            Real-time performance metrics for <span className="text-zinc-900 font-semibold">Smiles Dental Clinic - BGC</span>
+            Real-time telephony performance metrics for{" "}
+            <span className="text-zinc-950 font-semibold">{businessName}</span> • {preset.name}
           </p>
         </div>
 
@@ -157,15 +100,13 @@ export default function DashboardOverviewPage() {
           return (
             <div
               key={kpi.title}
-              className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs hover:border-zinc-300 transition-all duration-200 hover:-translate-y-0.5 group flex flex-col justify-between"
+              className="p-5 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs hover:border-zinc-300 transition-all duration-200 group flex flex-col justify-between"
             >
               <div className="flex items-start justify-between gap-3 mb-4">
                 <span className="text-xs font-medium text-zinc-500 leading-snug">
                   {kpi.title}
                 </span>
-                <div
-                  className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-700 shrink-0 group-hover:scale-105 transition-transform duration-200 border border-zinc-200/60"
-                >
+                <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-700 shrink-0 border border-zinc-200/60">
                   <Icon className="w-4 h-4" />
                 </div>
               </div>
@@ -198,11 +139,11 @@ export default function DashboardOverviewPage() {
           <div>
             <h3 className="text-sm font-semibold text-zinc-950">Inbound Calls by Time of Day</h3>
             <p className="text-[11px] text-zinc-500">
-              Notice high call volumes during lunch breaks (12-2 PM) and after 6 PM when clinic reception is closed.
+              High call volume occurs during lunch breaks (12-2 PM) and after-hours when front desk is unavailable.
             </p>
           </div>
           <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-medium">
-            100% Handled Automatically
+            100% Handled
           </span>
         </div>
 
@@ -231,9 +172,9 @@ export default function DashboardOverviewPage() {
                 style={{ height: bar.height }}
                 className={`w-full rounded-t-md transition-all ${
                   bar.peak
-                    ? "bg-blue-600 shadow-xs"
+                    ? "bg-zinc-950 shadow-xs"
                     : bar.afterHours
-                    ? "bg-indigo-500"
+                    ? "bg-blue-600"
                     : "bg-zinc-200 hover:bg-zinc-300"
                 }`}
               />
@@ -246,16 +187,16 @@ export default function DashboardOverviewPage() {
 
         <div className="flex items-center justify-end gap-5 text-[11px] pt-3 text-zinc-500">
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-sm bg-blue-600" />
+            <div className="w-2.5 h-2.5 rounded-sm bg-zinc-950" />
             <span>Lunch Peak</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-sm bg-indigo-500" />
-            <span>After-Hours Evening Calls (Recovered)</span>
+            <div className="w-2.5 h-2.5 rounded-sm bg-blue-600" />
+            <span>After-Hours Evening (Recovered)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-zinc-200" />
-            <span>Standard Hours</span>
+            <span>Regular Daytime</span>
           </div>
         </div>
       </div>
@@ -263,18 +204,18 @@ export default function DashboardOverviewPage() {
       {/* RECENT CALL LOGS FEED */}
       <div className="p-6 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-zinc-950">Recent Inbound Calls & Bookings</h3>
+          <h3 className="text-sm font-semibold text-zinc-950">Recent Calls for {preset.categoryName}</h3>
           <Link
             href="/dashboard/calls"
             className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
           >
-            <span>View transcripts & recordings</span>
+            <span>View transcripts & audio</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
         <div className="divide-y divide-zinc-100">
-          {recentCalls.map((call) => (
+          {preset.calls.map((call) => (
             <div
               key={call.id}
               className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-zinc-50/80 -mx-2 px-2 rounded-xl transition-colors"

@@ -39,6 +39,7 @@ export function CandyButton({
         "after:absolute after:top-[1px] after:right-[10%] after:w-[60%] after:h-[1px]",
         "after:bg-gradient-to-r after:from-transparent after:via-white/50 after:to-transparent",
         "hover:brightness-110",
+        "disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none disabled:active:scale-100 disabled:hover:brightness-100",
         variantStyles[variant],
         className
       )}

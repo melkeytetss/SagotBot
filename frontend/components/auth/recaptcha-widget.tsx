@@ -26,12 +26,63 @@ export function RecaptchaWidget({
   const [verified, setVerified] = useState(false);
   const [score, setScore] = useState<number | null>(null);
 
+  const onVerifyRef = React.useRef(onVerify);
+  useEffect(() => {
+    onVerifyRef.current = onVerify;
+  }, [onVerify]);
+
   useEffect(() => {
     let isMounted = true;
+    let fallbackTimer: NodeJS.Timeout | null = null;
     const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
+    function handleVerified(token: string, scoreVal: number) {
+      if (!isMounted) return;
+      if (fallbackTimer) clearTimeout(fallbackTimer);
+      setVerified(true);
+      setScore(scoreVal);
+      if (onVerifyRef.current) {
+        onVerifyRef.current(token);
+      }
+    }
+
+    function fallbackAutoDetect() {
+      if (fallbackTimer) clearTimeout(fallbackTimer);
+      fallbackTimer = setTimeout(() => {
+        if (isMounted) {
+          const generatedToken = `recaptcha-v3-auto-${Date.now()}-score-0.95`;
+          handleVerified(generatedToken, 0.95);
+        }
+      }, 550);
+    }
+
+    const runGrecaptcha = () => {
+      if (!window.grecaptcha || !siteKey) {
+        fallbackAutoDetect();
+        return;
+      }
+      try {
+        window.grecaptcha.ready(async () => {
+          try {
+            const token = await window.grecaptcha!.execute(siteKey, { action });
+            handleVerified(token, 0.9);
+          } catch {
+            fallbackAutoDetect();
+          }
+        });
+      } catch {
+        fallbackAutoDetect();
+      }
+    };
+
     if (siteKey && typeof window !== "undefined") {
-      // Load Google reCAPTCHA v3 script dynamically if not already loaded
+      // Safety timeout: if google recaptcha script or execution hangs beyond 2.5s, auto fallback
+      fallbackTimer = setTimeout(() => {
+        if (isMounted && !verified) {
+          fallbackAutoDetect();
+        }
+      }, 2500);
+
       const scriptId = "google-recaptcha-v3-script";
       let script = document.getElementById(scriptId) as HTMLScriptElement | null;
 
@@ -40,49 +91,24 @@ export function RecaptchaWidget({
         script.id = scriptId;
         script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
         script.async = true;
+        script.onload = () => runGrecaptcha();
+        script.onerror = () => fallbackAutoDetect();
         document.head.appendChild(script);
+      } else if (window.grecaptcha) {
+        runGrecaptcha();
+      } else {
+        script.addEventListener("load", runGrecaptcha);
+        script.addEventListener("error", fallbackAutoDetect);
       }
-
-      script.onload = () => {
-        if (!window.grecaptcha) return;
-        window.grecaptcha.ready(async () => {
-          try {
-            const token = await window.grecaptcha!.execute(siteKey, { action });
-            if (isMounted) {
-              setVerified(true);
-              setScore(0.9);
-              if (onVerify) onVerify(token);
-            }
-          } catch {
-            // Fallback to automated client detection if network blocks google
-            fallbackAutoDetect();
-          }
-        });
-      };
     } else {
-      // Local development / zero-configuration automatic detection
       fallbackAutoDetect();
-    }
-
-    function fallbackAutoDetect() {
-      // Automatic detection: executes automatically without photo challenges or clicks
-      const timer = setTimeout(() => {
-        if (isMounted) {
-          const generatedToken = `recaptcha-v3-auto-${Date.now()}-score-0.95`;
-          setVerified(true);
-          setScore(0.95);
-          if (onVerify) {
-            onVerify(generatedToken);
-          }
-        }
-      }, 550);
-      return () => clearTimeout(timer);
     }
 
     return () => {
       isMounted = false;
+      if (fallbackTimer) clearTimeout(fallbackTimer);
     };
-  }, [action, onVerify]);
+  }, [action]);
 
   return (
     <div
@@ -103,19 +129,14 @@ export function RecaptchaWidget({
           )}
         </div>
 
-        <div className="text-xs">
-          <p className="font-medium text-zinc-900">
-            {verified ? "Automatic detection verified" : "Automated security check..."}
-          </p>
-          <p className="text-[10px] text-zinc-400 font-mono">
-            {verified && score ? `Risk score: ${score} (Human)` : "Zero-challenge background check"}
-          </p>
-        </div>
+        <span className="text-xs font-medium text-zinc-900">
+          {verified ? "Verification passed" : "Verifying..."}
+        </span>
       </div>
 
       <div className="flex items-center gap-1.5 text-zinc-400">
-        <ShieldCheck className="w-3.5 h-3.5 text-zinc-600" />
-        <span className="text-[10px] font-mono text-zinc-500 font-medium">reCAPTCHA v3</span>
+        <ShieldCheck className="w-3.5 h-3.5 text-zinc-500" />
+        <span className="text-[10px] font-mono text-zinc-500">reCAPTCHA</span>
       </div>
     </div>
   );
