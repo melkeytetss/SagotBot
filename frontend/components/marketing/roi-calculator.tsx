@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Calculator, TrendingUp, Sparkles, PhoneCall, Clock, CheckCircle } from "lucide-react";
+import Link from "next/link";
+import { TrendingUp, PhoneCall, Clock } from "lucide-react";
 import { formatPHP } from "@/lib/utils";
 
 export function RoiCalculator() {
@@ -12,38 +13,34 @@ export function RoiCalculator() {
   // Calculations
   const monthlyCalls = weeklyCalls * 4.2;
   const missedCallsMonthly = Math.round(monthlyCalls * (missedRate / 100));
-  const convertedAppointments = Math.round(missedCallsMonthly * 0.55); // 55% booking rate
+  const convertedAppointments = Math.round(missedCallsMonthly * 0.55);
   const monthlyRevenueRecovered = convertedAppointments * avgTicket;
-  const hoursSavedMonthly = Math.round(monthlyCalls * 0.08); // ~5 mins per call saved
+  const hoursSavedMonthly = Math.round(monthlyCalls * 0.08);
 
   return (
     <div className="w-full max-w-4xl mx-auto py-12 px-4">
-      <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-b from-[#12141f] to-[#0c0e17] border border-white/10 shadow-2xl relative overflow-hidden">
-        {/* Glow behind stats */}
-        <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-emerald-500/10 blur-[90px] rounded-full pointer-events-none" />
-
-        <div className="text-center max-w-xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-3">
-            <Calculator className="w-3.5 h-3.5" />
-            <span>Philippine Clinic Revenue Calculator</span>
-          </div>
-          <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            How much revenue is your clinic losing to missed calls?
+      <div className="p-8 sm:p-10 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs">
+        <div className="text-center max-w-lg mx-auto mb-8">
+          <span className="text-xs uppercase tracking-widest text-blue-600 font-mono font-semibold">
+            Calculator
+          </span>
+          <h3 className="text-2xl sm:text-3xl font-bold text-zinc-950 tracking-tight mt-1">
+            Estimate recovered business revenue
           </h3>
-          <p className="text-xs sm:text-sm text-slate-400 mt-2">
-            When patients call during lunch breaks, Sunday closures, or while reception is busy, 80% do not leave a voicemail—they call the clinic down the street.
+          <p className="text-xs text-zinc-500 mt-1">
+            See how much missed calls cost your business each month.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* SLIDERS (Left 7 Cols) */}
-          <div className="lg:col-span-7 space-y-6">
-            {/* Slider 1: Weekly Calls */}
+          {/* Sliders */}
+          <div className="lg:col-span-7 space-y-5">
+            {/* Weekly Calls */}
             <div>
-              <div className="flex justify-between items-center text-xs font-medium mb-2">
-                <span className="text-slate-300">Weekly Inbound Phone Calls</span>
-                <span className="font-mono text-emerald-400 font-bold text-sm bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
-                  {weeklyCalls} calls/week
+              <div className="flex justify-between items-center text-xs font-medium mb-1.5">
+                <span className="text-zinc-700">Weekly Customer Calls</span>
+                <span className="font-mono text-zinc-950 font-semibold text-xs">
+                  {weeklyCalls} calls/wk
                 </span>
               </div>
               <input
@@ -53,20 +50,15 @@ export function RoiCalculator() {
                 step="5"
                 value={weeklyCalls}
                 onChange={(e) => setWeeklyCalls(Number(e.target.value))}
-                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                className="w-full h-1.5 bg-zinc-200 rounded-lg appearance-none cursor-pointer accent-zinc-950"
               />
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-mono">
-                <span>10 calls</span>
-                <span>125 calls</span>
-                <span>250 calls</span>
-              </div>
             </div>
 
-            {/* Slider 2: Average Appointment Value */}
+            {/* Average Ticket / Booking Value */}
             <div>
-              <div className="flex justify-between items-center text-xs font-medium mb-2">
-                <span className="text-slate-300">Average Patient Value (PHP)</span>
-                <span className="font-mono text-emerald-400 font-bold text-sm bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+              <div className="flex justify-between items-center text-xs font-medium mb-1.5">
+                <span className="text-zinc-700">Avg. Booking / Ticket Value</span>
+                <span className="font-mono text-zinc-950 font-semibold text-xs">
                   {formatPHP(avgTicket)}
                 </span>
               </div>
@@ -77,20 +69,15 @@ export function RoiCalculator() {
                 step="250"
                 value={avgTicket}
                 onChange={(e) => setAvgTicket(Number(e.target.value))}
-                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                className="w-full h-1.5 bg-zinc-200 rounded-lg appearance-none cursor-pointer accent-zinc-950"
               />
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-mono">
-                <span>₱500 (Basic)</span>
-                <span>₱5,000 (Ortho/Veneer)</span>
-                <span>₱10,000+</span>
-              </div>
             </div>
 
-            {/* Slider 3: Missed Call Rate */}
+            {/* Missed Call Rate */}
             <div>
-              <div className="flex justify-between items-center text-xs font-medium mb-2">
-                <span className="text-slate-300">Estimated Missed Calls Rate</span>
-                <span className="font-mono text-amber-400 font-bold text-sm bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
+              <div className="flex justify-between items-center text-xs font-medium mb-1.5">
+                <span className="text-zinc-700">Estimated Missed Calls</span>
+                <span className="font-mono text-zinc-950 font-semibold text-xs">
                   {missedRate}%
                 </span>
               </div>
@@ -101,60 +88,55 @@ export function RoiCalculator() {
                 step="2"
                 value={missedRate}
                 onChange={(e) => setMissedRate(Number(e.target.value))}
-                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                className="w-full h-1.5 bg-zinc-200 rounded-lg appearance-none cursor-pointer accent-zinc-950"
               />
-              <p className="text-[11px] text-slate-500 mt-1">
-                Industry average for clinics in Metro Manila & Cebu is 28-35% missed after 5:00 PM.
-              </p>
             </div>
           </div>
 
-          {/* RESULTS CARD (Right 5 Cols) */}
-          <div className="lg:col-span-5 p-6 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-center space-y-5 shadow-xl">
+          {/* Results Summary */}
+          <div className="lg:col-span-5 p-6 rounded-xl bg-zinc-50 border border-zinc-200 text-center space-y-4">
             <div>
-              <span className="text-[11px] uppercase tracking-wider text-emerald-400 font-mono font-semibold">
-                Recovered Revenue Potential
+              <span className="text-[11px] uppercase tracking-wider text-blue-600 font-mono font-semibold">
+                Recoverable Revenue
               </span>
-              <div className="text-4xl font-black text-white tracking-tight mt-1 font-mono text-emerald-300">
+              <div className="text-3xl font-bold text-zinc-950 tracking-tight mt-0.5 font-mono">
                 {formatPHP(monthlyRevenueRecovered)}
-                <span className="text-xs font-normal text-slate-400 block font-sans mt-0.5">
-                  / month in saved bookings
+                <span className="text-xs font-normal text-zinc-500 block font-sans">
+                  per month
                 </span>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/10 text-left">
-              <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5">
-                <div className="flex items-center gap-1.5 text-slate-400 text-[10px]">
-                  <PhoneCall className="w-3 h-3 text-emerald-400" />
-                  <span>Bookings Saved</span>
+            <div className="grid grid-cols-2 gap-2.5 pt-2 border-t border-zinc-200/80 text-left">
+              <div className="p-2.5 rounded-lg bg-white border border-zinc-200 text-xs">
+                <div className="flex items-center gap-1 text-zinc-400 text-[10px]">
+                  <PhoneCall className="w-3 h-3 text-blue-600" />
+                  <span>Bookings</span>
                 </div>
-                <p className="text-lg font-bold text-white font-mono mt-1">
-                  +{convertedAppointments}{" "}
-                  <span className="text-[10px] font-normal text-slate-400">pts</span>
+                <p className="text-base font-bold text-zinc-950 font-mono mt-0.5">
+                  +{convertedAppointments}
                 </p>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5">
-                <div className="flex items-center gap-1.5 text-slate-400 text-[10px]">
-                  <Clock className="w-3 h-3 text-emerald-400" />
-                  <span>Staff Hours</span>
+              <div className="p-2.5 rounded-lg bg-white border border-zinc-200 text-xs">
+                <div className="flex items-center gap-1 text-zinc-400 text-[10px]">
+                  <Clock className="w-3 h-3 text-blue-600" />
+                  <span>Hours Saved</span>
                 </div>
-                <p className="text-lg font-bold text-white font-mono mt-1">
-                  +{hoursSavedMonthly}{" "}
-                  <span className="text-[10px] font-normal text-slate-400">hrs</span>
+                <p className="text-base font-bold text-zinc-950 font-mono mt-0.5">
+                  +{hoursSavedMonthly} hrs
                 </p>
               </div>
             </div>
 
-            <div className="pt-2">
-              <a
+            <div className="pt-1">
+              <Link
                 href="/signup"
-                className="w-full py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 interactive-press cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-white font-medium text-xs flex items-center justify-center gap-1.5 transition-colors interactive-press cursor-pointer"
               >
-                <span>Recover This Revenue Now</span>
+                <span>Start Free Trial</span>
                 <TrendingUp className="w-3.5 h-3.5" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -162,3 +144,5 @@ export function RoiCalculator() {
     </div>
   );
 }
+
+export default RoiCalculator;

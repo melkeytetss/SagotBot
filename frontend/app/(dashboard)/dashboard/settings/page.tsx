@@ -188,20 +188,21 @@ export function ClinicSettingsPage() {
         <div>
           <div className="flex items-center gap-2">
             <FlipText
-              className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white"
+              className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950"
               duration={1.8}
             >
               Clinic Persona & Knowledge Base
             </FlipText>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-zinc-600 mt-1">
             Configure how your AI receptionist greets callers, handles Philippine HMO inquiries, and schedules appointments.
           </p>
         </div>
 
         <CandyButton
+          variant="black"
           onClick={handleSaveAll}
-          className="py-2.5 px-4 text-xs font-bold flex items-center gap-2 shadow-lg shadow-emerald-500/20"
+          className="py-2.5 px-4 text-xs font-semibold flex items-center gap-2"
         >
           <Save className="w-4 h-4" />
           <span>{savedSuccess ? "Saved to Cloud!" : "Save Changes"}</span>
@@ -209,72 +210,72 @@ export function ClinicSettingsPage() {
       </div>
 
       {savedSuccess && (
-        <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2 animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4" />
+        <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 text-xs flex items-center gap-2 animate-in fade-in">
+          <CheckCircle2 className="w-4 h-4 text-blue-600" />
           <span>All clinic persona prompts, hours, and FAQs updated successfully in Supabase!</span>
         </div>
       )}
 
       {/* SECTION 1: AI PERSONA */}
-      <div className="p-6 rounded-2xl bg-slate-900/80 border border-white/10 space-y-4">
-        <div className="flex items-center gap-2 text-sm font-bold text-white">
-          <Bot className="w-4 h-4 text-emerald-400" />
+      <div className="p-6 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-4">
+        <div className="flex items-center gap-2 text-sm font-bold text-zinc-950">
+          <Bot className="w-4 h-4 text-blue-600" />
           <span>AI Receptionist Voice & Persona</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
           <div>
-            <label className="block text-slate-300 mb-1">AI Receptionist Name</label>
+            <label className="block text-zinc-700 font-medium mb-1">AI Receptionist Name</label>
             <input
               type="text"
               value={botName}
               onChange={(e) => setBotName(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-white border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600/20"
             />
           </div>
 
           <div>
-            <label className="block text-slate-300 mb-1">Clinic Display Name</label>
+            <label className="block text-zinc-700 font-medium mb-1">Clinic Display Name</label>
             <input
               type="text"
               value={clinicName}
               onChange={(e) => setClinicName(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-white border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600/20"
             />
           </div>
 
           <div>
-            <label className="block text-slate-300 mb-1">Doctor Call Forwarding Phone</label>
+            <label className="block text-zinc-700 font-medium mb-1">Doctor Call Forwarding Phone</label>
             <input
               type="text"
               value={forwardingPhone}
               onChange={(e) => setForwardingPhone(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white font-mono focus:outline-none focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-white border border-zinc-200 rounded-xl text-zinc-900 font-mono focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600/20"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs text-slate-300 mb-1">
+          <label className="block text-xs text-zinc-700 font-medium mb-1">
             Custom Taglish Greeting Prompt (Spoken on call connect)
           </label>
           <textarea
             rows={3}
             value={greeting}
             onChange={(e) => setGreeting(e.target.value)}
-            className="w-full p-3 bg-slate-950 border border-white/10 rounded-xl text-xs text-white leading-relaxed focus:outline-none focus:border-emerald-500"
+            className="w-full p-3 bg-white border border-zinc-200 rounded-xl text-xs text-zinc-900 leading-relaxed focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600/20"
           />
         </div>
       </div>
 
       {/* SECTION 2: OPERATING HOURS */}
-      <div className="p-6 rounded-2xl bg-slate-900/80 border border-white/10 space-y-4">
+      <div className="p-6 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-bold text-white">
-            <Clock className="w-4 h-4 text-emerald-400" />
+          <div className="flex items-center gap-2 text-sm font-bold text-zinc-950">
+            <Clock className="w-4 h-4 text-blue-600" />
             <span>Weekly Operating Hours</span>
           </div>
-          <span className="text-[11px] text-slate-400">
+          <span className="text-[11px] text-zinc-500">
             Calls outside these hours trigger after-hours booking mode.
           </span>
         </div>
@@ -284,11 +285,11 @@ export function ClinicSettingsPage() {
             <div
               key={h.day}
               className={`p-3 rounded-xl border transition-colors ${
-                h.active ? "bg-slate-950/80 border-white/10" : "bg-slate-950/30 border-white/5 opacity-60"
+                h.active ? "bg-zinc-50/70 border-zinc-200" : "bg-zinc-50/30 border-zinc-200/50 opacity-60"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-white">{h.day}</span>
+                <span className="font-semibold text-zinc-900">{h.day}</span>
                 <input
                   type="checkbox"
                   checked={h.active}
@@ -297,17 +298,17 @@ export function ClinicSettingsPage() {
                     updated[i].active = e.target.checked;
                     setHours(updated);
                   }}
-                  className="rounded text-emerald-500 focus:ring-0 cursor-pointer"
+                  className="rounded text-blue-600 focus:ring-0 cursor-pointer"
                 />
               </div>
               {h.active ? (
-                <div className="flex items-center gap-1 font-mono text-[11px] text-slate-300">
+                <div className="flex items-center gap-1 font-mono text-[11px] text-zinc-600">
                   <span>{h.open}</span>
                   <span>-</span>
                   <span>{h.close}</span>
                 </div>
               ) : (
-                <span className="text-[11px] text-rose-400 font-mono">Closed</span>
+                <span className="text-[11px] text-rose-600 font-mono">Closed</span>
               )}
             </div>
           ))}
@@ -317,10 +318,10 @@ export function ClinicSettingsPage() {
       {/* SECTION 3: KNOWLEDGE BASE & FAQ MANAGER */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: FAQs Table (7 Cols) */}
-        <div className="lg:col-span-7 p-6 rounded-2xl bg-slate-900/80 border border-white/10 space-y-4">
+        <div className="lg:col-span-7 p-6 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm font-bold text-white">
-              <HelpCircle className="w-4 h-4 text-emerald-400" />
+            <div className="flex items-center gap-2 text-sm font-bold text-zinc-950">
+              <HelpCircle className="w-4 h-4 text-blue-600" />
               <span>Clinic FAQs ({faqs.length})</span>
             </div>
           </div>
@@ -329,46 +330,47 @@ export function ClinicSettingsPage() {
             {faqs.map((faq) => (
               <div
                 key={faq.id}
-                className="p-3.5 rounded-xl bg-slate-950 border border-white/5 text-xs space-y-1 relative group"
+                className="p-3.5 rounded-xl bg-zinc-50/60 border border-zinc-200/70 text-xs space-y-1 relative group hover:border-zinc-300 transition-colors"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-white">{faq.question}</span>
+                  <span className="font-semibold text-zinc-900">{faq.question}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-[9px] font-mono bg-white/5 px-2 py-0.5 rounded text-slate-400">
+                    <span className="text-[10px] font-mono bg-zinc-200/70 px-2 py-0.5 rounded text-zinc-700">
                       {faq.category}
                     </span>
                     <button
                       onClick={() => handleDeleteFaq(faq.id)}
-                      className="text-slate-500 hover:text-rose-400 p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="text-zinc-400 hover:text-rose-600 p-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
-                <p className="text-slate-400 text-[11px] leading-relaxed">{faq.answer}</p>
+                <p className="text-zinc-600 text-[11px] leading-relaxed">{faq.answer}</p>
               </div>
             ))}
           </div>
 
           {/* Add New FAQ Form */}
-          <form onSubmit={handleAddFaq} className="pt-3 border-t border-white/10 space-y-2 text-xs">
-            <p className="font-bold text-slate-300">Add New Clinic Question & Answer</p>
+          <form onSubmit={handleAddFaq} className="pt-3 border-t border-zinc-200 space-y-2 text-xs">
+            <p className="font-semibold text-zinc-900">Add New Clinic Question & Answer</p>
             <input
               type="text"
               placeholder="e.g. May parking po ba sa clinic niyo?"
               value={newQuestion}
               onChange={(e) => setNewQuestion(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-white border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600/20"
             />
             <textarea
               rows={2}
               placeholder="e.g. Opo, may free basement parking for patients on 26th Street..."
               value={newAnswer}
               onChange={(e) => setNewAnswer(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-white border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600/20"
             />
             <CandyButton
               type="submit"
+              variant="black"
               className="py-2 px-3.5 text-xs font-semibold flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
@@ -378,12 +380,12 @@ export function ClinicSettingsPage() {
         </div>
 
         {/* Right: Interactive Playground Tester (5 Cols) */}
-        <div className="lg:col-span-5 p-6 rounded-2xl bg-gradient-to-b from-[#121522] to-slate-950 border border-emerald-500/20 space-y-4">
-          <div className="flex items-center gap-2 text-sm font-bold text-white">
-            <Sparkles className="w-4 h-4 text-emerald-400" />
+        <div className="lg:col-span-5 p-6 rounded-2xl bg-zinc-50/70 border border-zinc-200/80 shadow-2xs space-y-4">
+          <div className="flex items-center gap-2 text-sm font-bold text-zinc-950">
+            <Sparkles className="w-4 h-4 text-blue-600" />
             <span>Interactive Knowledge Base Tester</span>
           </div>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-zinc-600">
             Type a test question below to simulate how SagotBot will answer a live caller in Taglish using your clinic settings.
           </p>
 
@@ -394,12 +396,12 @@ export function ClinicSettingsPage() {
                 value={testInput}
                 onChange={(e) => setTestInput(e.target.value)}
                 placeholder="Ask e.g. Tumatanggap ba kayo ng Maxicare?"
-                className="w-full pl-3 pr-10 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full pl-3 pr-10 py-2.5 bg-white border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600/20 shadow-2xs"
               />
               <button
                 type="submit"
                 disabled={testing}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-emerald-500 text-slate-950 hover:bg-emerald-400 interactive-press cursor-pointer disabled:opacity-50"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-zinc-900 text-white hover:bg-zinc-800 interactive-press cursor-pointer disabled:opacity-50"
               >
                 <Send className="w-3.5 h-3.5" />
               </button>
@@ -420,7 +422,7 @@ export function ClinicSettingsPage() {
                     setTestInput(chip);
                     handleTestPlaygroundWithText(chip);
                   }}
-                  className="px-2 py-1 rounded-md bg-white/5 hover:bg-emerald-500/10 border border-white/10 hover:border-emerald-500/30 text-[10px] text-slate-300 hover:text-emerald-300 transition-colors text-left"
+                  className="px-2 py-1 rounded-md bg-white hover:bg-zinc-100 border border-zinc-200 text-[10px] text-zinc-700 hover:text-zinc-950 transition-colors text-left shadow-2xs cursor-pointer"
                 >
                   {chip}
                 </button>
@@ -430,61 +432,61 @@ export function ClinicSettingsPage() {
 
           {/* Playground Output */}
           {testResponse && (
-            <div className="p-4 rounded-xl bg-slate-900/90 border border-emerald-500/30 text-xs space-y-2 animate-in fade-in">
+            <div className="p-4 rounded-xl bg-white border border-blue-200 text-xs space-y-2 animate-in fade-in shadow-2xs">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider">
+                <span className="text-[10px] font-mono text-blue-600 uppercase tracking-wider font-semibold">
                   SagotBot Response (Voice Spoken)
                 </span>
                 <button
                   type="button"
                   onClick={() => handleSpeakResponse(testResponse)}
-                  className="flex items-center gap-1 text-[10px] font-mono text-emerald-400 hover:text-emerald-300 cursor-pointer"
+                  className="flex items-center gap-1 text-[10px] font-mono text-blue-600 hover:text-blue-700 cursor-pointer font-medium"
                 >
                   <Phone className="w-3 h-3" />
                   <span>{isSpeaking ? "Stop Voice" : "Listen (TTS)"}</span>
                 </button>
               </div>
-              <p className="text-slate-200 leading-relaxed italic">&ldquo;{testResponse}&rdquo;</p>
+              <p className="text-zinc-800 leading-relaxed italic">&ldquo;{testResponse}&rdquo;</p>
             </div>
           )}
 
           {/* Integrations Health */}
-          <div className="pt-4 border-t border-white/10 space-y-2">
-            <p className="text-xs font-bold text-slate-300">Active Integrations</p>
+          <div className="pt-4 border-t border-zinc-200 space-y-2">
+            <p className="text-xs font-bold text-zinc-900">Active Integrations</p>
             <div className="space-y-1.5 text-xs">
-              <div className="p-2.5 rounded-xl bg-slate-900 border border-white/5 flex items-center justify-between">
+              <div className="p-2.5 rounded-xl bg-white border border-zinc-200 flex items-center justify-between shadow-2xs">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-emerald-400" />
-                  <span className="text-slate-300">Google Calendar</span>
+                  <Calendar className="w-4 h-4 text-blue-600" />
+                  <span className="text-zinc-700 font-medium">Google Calendar</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => handleTestPing("gcal")}
-                    className="text-[10px] font-mono text-slate-400 hover:text-emerald-400"
+                    className="text-[10px] font-mono text-zinc-500 hover:text-zinc-900 cursor-pointer"
                   >
                     {pingStatus["gcal"] || "Test Ping"}
                   </button>
-                  <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                  <span className="text-[10px] font-mono text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 font-medium">
                     Connected
                   </span>
                 </div>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-slate-900 border border-white/5 flex items-center justify-between">
+              <div className="p-2.5 rounded-xl bg-white border border-zinc-200 flex items-center justify-between shadow-2xs">
                 <div className="flex items-center gap-2">
-                  <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
-                  <span className="text-slate-300">Google Sheets Sync</span>
+                  <FileSpreadsheet className="w-4 h-4 text-blue-600" />
+                  <span className="text-zinc-700 font-medium">Google Sheets Sync</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => handleTestPing("sheets")}
-                    className="text-[10px] font-mono text-slate-400 hover:text-emerald-400"
+                    className="text-[10px] font-mono text-zinc-500 hover:text-zinc-900 cursor-pointer"
                   >
                     {pingStatus["sheets"] || "Test Ping"}
                   </button>
-                  <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                  <span className="text-[10px] font-mono text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 font-medium">
                     Connected
                   </span>
                 </div>

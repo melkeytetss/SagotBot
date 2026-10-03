@@ -158,7 +158,7 @@ export function InteractiveCharacters({
       style={{ perspective: "1000px" }}
     >
       {/* Ambient Floor Glow */}
-      <div className="absolute bottom-0 w-[420px] h-[100px] bg-emerald-500/10 blur-3xl rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 w-[420px] h-[80px] bg-blue-500/5 blur-3xl rounded-full pointer-events-none" />
 
       {/* Floating Joy Particles when Email is focused */}
       <AnimatePresence>

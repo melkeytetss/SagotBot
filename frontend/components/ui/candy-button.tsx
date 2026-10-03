@@ -2,27 +2,31 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 export interface CandyButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "emerald" | "blue" | "neutral";
+  variant?: "black" | "blue" | "emerald" | "neutral";
 }
 
 export function CandyButton({
   className,
-  variant = "emerald",
-  children = "Candy Button",
+  variant = "black",
+  children = "Button",
   ...props
 }: CandyButtonProps) {
   const variantStyles = {
-    emerald: cn(
-      "border border-emerald-400/70 bg-[radial-gradient(95%_60%_at_50%_75%,#047857_0%,#10b981_100%)]",
-      "shadow-[0px_4px_32px_-8px_rgba(16,185,129,0.5),inset_0px_1px_8px_-3px_#FFFFFF]"
+    black: cn(
+      "border border-zinc-950 bg-zinc-950 text-white hover:bg-zinc-800 shadow-sm",
+      "after:hidden"
     ),
     blue: cn(
-      "border border-[#54A1FD] bg-[radial-gradient(95%_60%_at_50%_75%,#005FD6_0%,#209BFF_100%)]",
-      "shadow-[0px_4px_48px_-12px_#1187FF,inset_0px_1px_8px_-4px_#FFFFFF]"
+      "border border-blue-600 bg-blue-600 text-white hover:bg-blue-700 shadow-sm",
+      "after:hidden"
+    ),
+    emerald: cn(
+      "border border-emerald-600 bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm",
+      "after:hidden"
     ),
     neutral: cn(
-      "border border-white/20 bg-[radial-gradient(95%_60%_at_50%_75%,#1e293b_0%,#334155_100%)]",
-      "shadow-[0px_4px_32px_-8px_rgba(0,0,0,0.6),inset_0px_1px_6px_-2px_#FFFFFF]"
+      "border border-zinc-200 bg-zinc-100 text-zinc-900 hover:bg-zinc-200 shadow-sm",
+      "after:hidden"
     ),
   };
 

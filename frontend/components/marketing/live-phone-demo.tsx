@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Phone, PhoneOff, Calendar, Check, Volume2, UserCheck, Sparkles, RefreshCw } from "lucide-react";
+import { Phone, PhoneOff, Calendar, Check, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface TranscriptTurn {
@@ -13,17 +13,17 @@ interface TranscriptTurn {
 const DEMO_TRANSCRIPT: TranscriptTurn[] = [
   {
     speaker: "bot",
-    text: "Magandang araw po! Salamat sa pagtawag sa Smiles Dental Clinic. Ako po si Sarah, ang AI receptionist. Paano po ako makakatulong?",
+    text: "Magandang araw po! Salamat sa pagtawag sa Studio Apex. Ako po si Sarah, ang inyong AI receptionist. Paano po ako makakatulong?",
     delayMs: 800,
   },
   {
     speaker: "caller",
-    text: "Hello po, magtatanong lang po sana kung may available slot po kayo bukas para sa teeth cleaning?",
+    text: "Hello po, magtatanong lang po sana kung may available slot kayo bukas para sa consultation and service booking?",
     delayMs: 2500,
   },
   {
     speaker: "bot",
-    text: "Meron po! Bukas, Friday, available po si Doc ng 2:00 PM at 4:30 PM. Ang regular cleaning po ay ₱1,500. Alin pong oras ang mas convenient sa inyo?",
+    text: "Meron po! Bukas po available ang aming team ng 2:00 PM at 4:30 PM. Ang initial consultation po ay ₱1,500. Alin pong oras ang mas convenient sa inyo?",
     delayMs: 4600,
   },
   {
@@ -33,7 +33,7 @@ const DEMO_TRANSCRIPT: TranscriptTurn[] = [
   },
   {
     speaker: "bot",
-    text: "Naka-book na po ang appointment niyo, Ma'am Maria! Tomorrow, 2:00 PM for Oral Prophylaxis. Nag-text na rin po kami ng confirmation sa number na ito. Maraming salamat po!",
+    text: "Naka-book na po ang schedule niyo, Ma'am Maria! Tomorrow, 2:00 PM. Nag-text na rin po kami ng confirmation sa inyong number. Maraming salamat po!",
     delayMs: 9200,
   },
 ];
@@ -96,49 +96,31 @@ export function LivePhoneDemo() {
   };
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 py-8">
+    <div className="relative w-full max-w-4xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-10 py-8">
       {/* LEFT: Context & Highlights */}
-      <div className="lg:w-1/2 text-left space-y-5">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Interactive Browser Simulator</span>
-        </div>
-        <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white leading-tight">
-          Hear how SagotBot sounds on a real clinic call.
+      <div className="lg:w-1/2 text-left space-y-4">
+        <span className="text-xs uppercase tracking-widest text-blue-600 font-mono font-semibold">
+          Interactive Demo
+        </span>
+        <h2 className="text-3xl font-bold tracking-tight text-zinc-950 leading-tight">
+          Hear SagotBot on a live business call
         </h2>
-        <p className="text-sm text-slate-400 leading-relaxed">
-          Test our Philippine dental clinic receptionist in action. Notice how effortlessly it switches between Tagalog and English, checks real-time slot availability, and writes appointments directly to Google Calendar.
+        <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+          Test our Philippine AI receptionist in action. Switches effortlessly between Tagalog and English, answers customer questions, checks real-time slot availability, and books into your calendar.
         </p>
 
-        <div className="space-y-3 pt-2">
-          <div className="flex items-start gap-3">
-            <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-              <Check className="w-3.5 h-3.5 stroke-[3]" />
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-slate-200">Natural Taglish Code-Switching</p>
-              <p className="text-[11px] text-slate-400">Speaks like a warm, polite Philippine clinic receptionist (*po/opo*).</p>
-            </div>
+        <div className="space-y-2 pt-2">
+          <div className="flex items-center gap-2 text-xs text-zinc-700">
+            <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+            <span>Natural Taglish speech synthesis</span>
           </div>
-
-          <div className="flex items-start gap-3">
-            <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-              <Check className="w-3.5 h-3.5 stroke-[3]" />
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-slate-200">Live Google Calendar Integration</p>
-              <p className="text-[11px] text-slate-400">Instantly books confirmed slots with zero double-booking risk.</p>
-            </div>
+          <div className="flex items-center gap-2 text-xs text-zinc-700">
+            <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+            <span>Real-time Google Calendar locking</span>
           </div>
-
-          <div className="flex items-start gap-3">
-            <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-              <Check className="w-3.5 h-3.5 stroke-[3]" />
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-slate-200">Automated SMS Reminders & Sheets Sync</p>
-              <p className="text-[11px] text-slate-400">Caller receives an instant SMS confirmation and row logs to Sheets.</p>
-            </div>
+          <div className="flex items-center gap-2 text-xs text-zinc-700">
+            <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+            <span>Instant customer SMS confirmation</span>
           </div>
         </div>
 
@@ -146,62 +128,62 @@ export function LivePhoneDemo() {
           <div className="pt-2">
             <button
               onClick={handleReset}
-              className="inline-flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-white transition-colors interactive-press"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-950 transition-colors cursor-pointer"
             >
               <RefreshCw className="w-3.5 h-3.5" />
-              <span>Reset & Replay Demo Call</span>
+              <span>Reset demo call</span>
             </button>
           </div>
         )}
       </div>
 
-      {/* RIGHT: THE SMARTPHONE INTERFACE */}
+      {/* RIGHT: THE SMARTPHONE INTERFACE (LIGHT MODE) */}
       <div className="lg:w-1/2 flex justify-center">
-        <div className="relative w-[320px] h-[640px] rounded-[48px] bg-slate-950 border-[7px] border-slate-800 shadow-2xl shadow-emerald-500/10 flex flex-col overflow-hidden">
+        <div className="relative w-[300px] h-[580px] rounded-[42px] bg-white border-[6px] border-zinc-200/90 shadow-lg flex flex-col overflow-hidden">
           {/* Dynamic Island Pill */}
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-black rounded-full z-30 flex items-center justify-between px-3">
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <div className="w-2.5 h-2.5 rounded-full bg-slate-900 border border-white/20" />
+          <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-24 h-5 bg-zinc-950 rounded-full z-30 flex items-center justify-between px-2.5">
+            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+            <div className="w-2 h-2 rounded-full bg-zinc-800" />
           </div>
 
-          {/* SCREEN CONTENT */}
-          <div className="flex-1 flex flex-col justify-between pt-12 pb-6 px-4 bg-gradient-to-b from-slate-900 via-slate-950 to-black text-white relative">
+          {/* LIGHT MODE SCREEN CONTENT */}
+          <div className="flex-1 flex flex-col justify-between pt-10 pb-5 px-3.5 bg-[#fafafa] text-zinc-900 relative">
             {callState === "incoming" && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="flex-1 flex flex-col items-center justify-between py-6 text-center"
+                className="flex-1 flex flex-col items-center justify-between py-4 text-center"
               >
                 <div>
-                  <span className="text-[11px] font-mono text-emerald-400 tracking-wider uppercase">
-                    Inbound Clinic Call
+                  <span className="text-[10px] font-mono text-blue-600 uppercase tracking-wider font-semibold">
+                    Inbound Customer Call
                   </span>
-                  <h3 className="text-xl font-bold text-white mt-1">Maria Clara</h3>
-                  <p className="text-xs text-slate-400 font-mono mt-0.5">+63 917 555 0192</p>
-                  <p className="text-[11px] text-slate-500 mt-2 bg-white/5 py-1 px-3 rounded-full border border-white/5">
-                    Taglish Dental Inquiry
-                  </p>
+                  <h3 className="text-lg font-bold text-zinc-950 mt-1">Maria Clara</h3>
+                  <p className="text-xs text-zinc-500 font-mono">+63 917 555 0192</p>
+                  <span className="inline-block text-[10px] text-zinc-600 mt-2 bg-white py-0.5 px-2.5 rounded-full border border-zinc-200/80 shadow-2xs">
+                    Taglish Service Inquiry
+                  </span>
                 </div>
 
-                {/* Animated Caller Avatar Ring */}
-                <div className="relative w-28 h-28 my-auto flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-full border-2 border-emerald-500/30 animate-ping" />
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-bold text-2xl shadow-xl shadow-emerald-500/30">
+                {/* Light Avatar */}
+                <div className="relative w-24 h-24 my-auto flex items-center justify-center">
+                  <div className="absolute inset-0 rounded-full border-2 border-blue-500/20 animate-ping" />
+                  <div className="w-20 h-20 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-zinc-950 font-bold text-xl shadow-xs">
                     MC
                   </div>
                 </div>
 
-                {/* Call Answer Buttons */}
-                <div className="w-full space-y-3">
+                {/* Call Answer Button */}
+                <div className="w-full space-y-2">
                   <button
                     onClick={handleStartCall}
-                    className="w-full py-3.5 px-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2.5 interactive-press cursor-pointer"
+                    className="w-full py-3 px-4 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-white font-medium text-xs shadow-xs flex items-center justify-center gap-2 interactive-press cursor-pointer transition-colors"
                   >
-                    <Phone className="w-4 h-4 fill-slate-950" />
-                    <span>Answer Call po</span>
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>Answer Call</span>
                   </button>
-                  <p className="text-[10px] text-slate-400">Click to listen to AI Taglish receptionist</p>
+                  <p className="text-[10px] text-zinc-400">Click to listen to AI receptionist</p>
                 </div>
               </motion.div>
             )}
@@ -209,29 +191,29 @@ export function LivePhoneDemo() {
             {(callState === "active" || callState === "completed") && (
               <div className="flex-1 flex flex-col justify-between">
                 {/* Active Header & Timer */}
-                <div className="text-center pb-2 border-b border-white/10">
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-xs font-mono text-emerald-400 font-semibold">
-                      {callState === "completed" ? "Call Ended • Success" : formatTimer(seconds)}
+                <div className="text-center pb-2 border-b border-zinc-200/70">
+                  <div className="flex items-center justify-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+                    <span className="text-xs font-mono text-blue-600 font-medium">
+                      {callState === "completed" ? "Call Ended • Confirmed" : formatTimer(seconds)}
                     </span>
                   </div>
-                  <h4 className="text-sm font-bold text-white mt-0.5">Smiles Dental Receptionist</h4>
+                  <h4 className="text-xs font-semibold text-zinc-950 mt-0.5">AI Business Receptionist</h4>
 
-                  {/* Real-Time Audio Soundwave Visualizer */}
+                  {/* Soundwave Visualizer */}
                   {callState === "active" && (
-                    <div className="flex items-center justify-center gap-1 h-6 mt-2">
-                      {[14, 24, 18, 28, 12, 22, 32, 16, 26, 14, 20].map((h, i) => (
+                    <div className="flex items-center justify-center gap-1 h-5 mt-1.5">
+                      {[12, 20, 16, 24, 10, 18, 26, 14, 22, 12, 16].map((h, i) => (
                         <motion.div
                           key={i}
-                          animate={{ height: [6, h, 6] }}
+                          animate={{ height: [4, h, 4] }}
                           transition={{
                             repeat: Infinity,
                             duration: 0.8,
                             delay: i * 0.08,
                             ease: "easeInOut",
                           }}
-                          className="w-1 bg-emerald-400 rounded-full"
+                          className="w-1 bg-blue-600 rounded-full"
                         />
                       ))}
                     </div>
@@ -239,25 +221,25 @@ export function LivePhoneDemo() {
                 </div>
 
                 {/* Dialogue Stream Container */}
-                <div className="flex-1 overflow-y-auto space-y-2.5 py-3 pr-1 text-left text-xs">
+                <div className="flex-1 overflow-y-auto space-y-2 py-2.5 pr-0.5 text-left text-xs">
                   {transcript.map((msg, idx) => (
                     <motion.div
                       key={idx}
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.25 }}
+                      transition={{ duration: 0.2 }}
                       className={`flex flex-col ${
                         msg.speaker === "bot" ? "items-start" : "items-end"
                       }`}
                     >
-                      <span className="text-[9px] text-slate-500 font-mono mb-0.5 px-1">
-                        {msg.speaker === "bot" ? "SagotBot (Sarah)" : "Maria Clara"}
+                      <span className="text-[9px] text-zinc-400 font-mono mb-0.5 px-0.5">
+                        {msg.speaker === "bot" ? "SagotBot" : "Maria Clara"}
                       </span>
                       <div
-                        className={`p-2.5 rounded-2xl max-w-[85%] text-xs leading-relaxed ${
+                        className={`p-2.5 rounded-xl max-w-[88%] text-[11px] leading-relaxed ${
                           msg.speaker === "bot"
-                            ? "bg-slate-800/90 text-slate-100 rounded-tl-sm border border-white/5"
-                            : "bg-emerald-600 text-white rounded-tr-sm"
+                            ? "bg-white text-zinc-800 rounded-tl-xs border border-zinc-200/80 shadow-2xs"
+                            : "bg-zinc-950 text-white rounded-tr-xs"
                         }`}
                       >
                         {msg.text}
@@ -266,52 +248,52 @@ export function LivePhoneDemo() {
                   ))}
                 </div>
 
-                {/* Automatic Google Calendar Event Confirmation Card */}
+                {/* Google Calendar Booking Card */}
                 <AnimatePresence>
                   {showCalendarBooking && (
                     <motion.div
-                      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                      initial={{ opacity: 0, y: 20, scale: 0.96 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 20 }}
-                      transition={{ type: "spring", stiffness: 240, damping: 18 }}
-                      className="p-3 rounded-2xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-200 text-xs shadow-xl mb-3 space-y-1.5"
+                      exit={{ opacity: 0, y: 15 }}
+                      transition={{ type: "spring", stiffness: 240, damping: 20 }}
+                      className="p-2.5 rounded-xl bg-white border border-blue-200 text-xs shadow-xs mb-2 space-y-1"
                     >
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 font-bold text-white text-[11px]">
-                          <Calendar className="w-3.5 h-3.5 text-emerald-400" />
-                          <span>Google Calendar Slot Confirmed</span>
+                        <div className="flex items-center gap-1.5 font-bold text-zinc-950 text-[10px]">
+                          <Calendar className="w-3 h-3 text-blue-600" />
+                          <span>Slot Confirmed</span>
                         </div>
-                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
-                          Auto-Synced
+                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-medium">
+                          Google Calendar ✓
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-300">
-                        Maria Clara • Oral Prophylaxis (Cleaning)
+                      <p className="text-[10px] text-zinc-700">
+                        Maria Clara • Service Consultation & Booking
                       </p>
-                      <p className="text-[10px] text-emerald-400 font-mono">
-                        Tomorrow at 2:00 PM - 2:45 PM (Asia/Manila)
+                      <p className="text-[9px] text-zinc-500 font-mono">
+                        Tomorrow at 2:00 PM - 2:45 PM
                       </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
-                {/* End Call / Reset */}
+                {/* Bottom Action */}
                 <div className="pt-1">
                   {callState === "active" ? (
                     <button
                       onClick={() => setCallState("completed")}
-                      className="w-full py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs flex items-center justify-center gap-2 interactive-press"
+                      className="w-full py-2 px-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 font-medium text-xs flex items-center justify-center gap-1.5 interactive-press cursor-pointer transition-colors"
                     >
-                      <PhoneOff className="w-3.5 h-3.5" />
-                      <span>End Simulated Call</span>
+                      <PhoneOff className="w-3 h-3" />
+                      <span>End Call</span>
                     </button>
                   ) : (
                     <button
                       onClick={handleReset}
-                      className="w-full py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 interactive-press"
+                      className="w-full py-2 px-3 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-white font-medium text-xs flex items-center justify-center gap-1.5 interactive-press cursor-pointer transition-colors"
                     >
-                      <RefreshCw className="w-3.5 h-3.5" />
-                      <span>Try Another Demo Call</span>
+                      <RefreshCw className="w-3 h-3" />
+                      <span>Replay Call</span>
                     </button>
                   )}
                 </div>
@@ -323,3 +305,5 @@ export function LivePhoneDemo() {
     </div>
   );
 }
+
+export default LivePhoneDemo;

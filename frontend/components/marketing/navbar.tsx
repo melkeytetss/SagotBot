@@ -7,11 +7,10 @@ import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 
 // Page sections in physical scroll order
 const NAV_LINKS = [
-  { name: "Demo",           href: "#live-demo"      },
-  { name: "Features",       href: "#features"       },
-  { name: "ROI Calculator", href: "#roi-calculator" },
-  { name: "Pricing",        href: "#pricing"        },
-  { name: "FAQ",            href: "#faq"            },
+  { name: "Demo",     href: "#live-demo" },
+  { name: "Features", href: "#features"  },
+  { name: "Pricing",  href: "#pricing"   },
+  { name: "FAQ",      href: "#faq"       },
 ] as const;
 
 function scrollToSection(id: string) {
@@ -105,35 +104,35 @@ export function MarketingNavbar() {
       {/* Scroll Progress Bar at the absolute top of viewport */}
       <motion.div
         style={{ scaleX }}
-        className="fixed top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-300 origin-left z-50 pointer-events-none"
+        className="fixed top-0 left-0 right-0 h-[2px] bg-blue-600 origin-left z-50 pointer-events-none"
       />
 
       {/* Top dissolve gradient so scrolling text smoothly disappears before hitting top edge */}
-      <div className="fixed top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#08090d] via-[#08090d]/85 to-transparent pointer-events-none z-30" />
+      <div className="fixed top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#f8f8f9] via-[#f8f8f9]/90 to-transparent pointer-events-none z-30" />
 
       <header className="fixed top-0 left-0 right-0 z-40 flex justify-center px-4 py-4 pointer-events-none">
         <nav
           className={`pointer-events-auto w-full max-w-5xl rounded-2xl transition-all duration-300 ${
             scrolled
-              ? "bg-[#0c0e17]/85 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 py-3 px-5"
-              : "bg-white/[0.03] backdrop-blur-md border border-white/5 py-4 px-6"
+              ? "bg-white/90 backdrop-blur-xl border border-zinc-200/80 shadow-xs py-3 px-5"
+              : "bg-white/70 backdrop-blur-md border border-zinc-200/60 py-3.5 px-6"
           }`}
         >
           <div className="flex items-center justify-between">
             {/* Brand */}
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/25 group-hover:scale-105 transition-transform duration-200">
-                <Bot className="w-5 h-5 text-slate-950 stroke-[2.5]" />
+              <div className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform duration-200">
+                <Bot className="w-4 h-4 stroke-[2.2]" />
               </div>
               <div className="flex items-center">
-                <span className="text-lg font-bold tracking-tight text-white">SagotBot</span>
-                <span className="ml-2 text-[9px] font-mono uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hidden sm:inline-block">
+                <span className="text-base font-semibold tracking-tight text-zinc-950">SagotBot</span>
+                <span className="ml-2 text-[9px] font-mono uppercase px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 border border-zinc-200 hidden sm:inline-block">
                   Taglish Voice
                 </span>
               </div>
             </Link>
 
-            {/* Desktop nav — discrete item highlights prevent crossing/sliding between tabs */}
+            {/* Desktop nav — discrete item highlights */}
             <div className="hidden md:flex items-center gap-1 relative">
               {NAV_LINKS.map((link) => {
                 const sectionId = link.href.replace("#", "");
@@ -146,23 +145,23 @@ export function MarketingNavbar() {
                     onMouseEnter={() => setHoveredNav(link.name)}
                     onMouseLeave={() => setHoveredNav(null)}
                     className={`relative px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors duration-150 ${
-                      isActive ? "text-emerald-400 font-semibold" : "text-slate-400 hover:text-white"
+                      isActive ? "text-zinc-950 font-semibold" : "text-zinc-500 hover:text-zinc-900"
                     }`}
                   >
                     {/* Hover pill */}
                     {hoveredNav === link.name && !isActive && (
                       <motion.div
-                        className="absolute inset-0 bg-white/8 rounded-lg -z-10"
+                        className="absolute inset-0 bg-zinc-100/70 rounded-lg -z-10"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.15 }}
                       />
                     )}
-                    {/* Active indicator (individual discrete item highlight, never sweeps across tabs) */}
+                    {/* Active indicator */}
                     {isActive && (
                       <motion.div
-                        className="absolute inset-0 bg-emerald-500/15 rounded-lg -z-10 border border-emerald-500/30"
+                        className="absolute inset-0 bg-zinc-100 rounded-lg -z-10 border border-zinc-200/70"
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.2 }}
@@ -175,19 +174,19 @@ export function MarketingNavbar() {
             </div>
 
             {/* Desktop CTAs */}
-            <div className="hidden sm:flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-2">
               <Link
                 href="/login"
-                className="text-xs font-medium text-slate-300 hover:text-white px-3.5 py-2 rounded-xl transition-colors duration-150 interactive-press"
+                className="text-xs font-medium text-zinc-600 hover:text-zinc-950 px-3.5 py-2 rounded-lg transition-colors duration-150 interactive-press"
               >
                 Sign In
               </Link>
               <a
                 href="#live-demo"
                 onClick={(e) => handleNavClick(e, "#live-demo")}
-                className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs shadow-lg shadow-emerald-500/20 flex items-center gap-1.5 transition-colors duration-150 interactive-press"
+                className="px-3.5 py-2 rounded-lg bg-zinc-950 hover:bg-zinc-800 text-white font-medium text-xs shadow-xs flex items-center gap-1.5 transition-colors duration-150 interactive-press"
               >
-                <PhoneCall className="w-3.5 h-3.5" />
+                <PhoneCall className="w-3.5 h-3.5 text-blue-400" />
                 <span>Test Live Call</span>
               </a>
             </div>
@@ -195,7 +194,7 @@ export function MarketingNavbar() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden text-slate-400 hover:text-white p-2 interactive-press"
+              className="md:hidden text-zinc-600 hover:text-zinc-950 p-2 interactive-press"
               aria-label="Toggle menu"
             >
               <AnimatePresence mode="wait" initial={false}>
@@ -220,7 +219,7 @@ export function MarketingNavbar() {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
-                className="md:hidden overflow-hidden border-t border-white/10 mt-3 pt-3 flex flex-col gap-1"
+                className="md:hidden overflow-hidden border-t border-zinc-200 mt-3 pt-3 flex flex-col gap-1"
               >
                 {NAV_LINKS.map((link, i) => {
                   const sectionId = link.href.replace("#", "");
@@ -233,28 +232,28 @@ export function MarketingNavbar() {
                       initial={{ opacity: 0, x: -8 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.04, duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                      className={`px-3 py-2.5 text-sm rounded-xl transition-colors duration-150 ${
+                      className={`px-3 py-2.5 text-sm rounded-lg transition-colors duration-150 ${
                         isActive
-                          ? "text-emerald-400 bg-emerald-500/10 font-semibold"
-                          : "text-slate-300 hover:text-white hover:bg-white/5"
+                          ? "text-zinc-950 bg-zinc-100 font-semibold"
+                          : "text-zinc-600 hover:text-zinc-950 hover:bg-zinc-50"
                       }`}
                     >
                       {link.name}
                     </motion.a>
                   );
                 })}
-                <div className="flex gap-2 pt-2 mt-1 border-t border-white/10">
+                <div className="flex gap-2 pt-2 mt-1 border-t border-zinc-200">
                   <Link
                     href="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="flex-1 text-center py-2.5 rounded-xl border border-white/10 text-xs font-semibold text-slate-300 hover:text-white"
+                    className="flex-1 text-center py-2 rounded-lg border border-zinc-200 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/signup"
                     onClick={() => setMobileOpen(false)}
-                    className="flex-1 text-center py-2.5 rounded-xl bg-emerald-500 text-slate-950 text-xs font-bold"
+                    className="flex-1 text-center py-2 rounded-lg bg-zinc-900 text-white text-xs font-medium"
                   >
                     Start Free Trial
                   </Link>

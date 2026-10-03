@@ -62,51 +62,65 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   };
 
   return (
-    <div className="min-h-screen bg-[#08090d] text-slate-100 flex overflow-hidden">
+    <div className="min-h-screen bg-[#f8f8f9] text-zinc-900 flex overflow-hidden">
       {/* SIDEBAR NAVIGATION */}
       <motion.aside
-        animate={{ width: sidebarCollapsed ? 76 : 260 }}
-        transition={{ type: "spring", stiffness: 300, damping: 28 }}
-        className="h-screen bg-[#0c0e17] border-r border-white/5 flex flex-col justify-between shrink-0 relative z-30 select-none"
+        animate={{ width: sidebarCollapsed ? 68 : 240 }}
+        transition={{ type: "spring", stiffness: 320, damping: 30 }}
+        className="h-screen bg-white border-r border-zinc-200/80 flex flex-col justify-between shrink-0 relative z-30 select-none shadow-2xs"
       >
         {/* Top: Brand & Branch Switcher */}
-        <div className="p-4 border-b border-white/5">
-          <div className="flex items-center justify-between mb-4">
-            <Link href="/" className="flex items-center gap-2.5 overflow-hidden">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
-                <Bot className="w-5 h-5 text-slate-950 stroke-[2.5]" />
-              </div>
-              {!sidebarCollapsed && (
-                <div className="flex flex-col">
-                  <span className="font-bold text-sm text-white tracking-tight">SagotBot</span>
-                  <span className="text-[9px] font-mono text-emerald-400 uppercase">Clinic Ops</span>
+        <div className={`border-b border-zinc-200/80 ${sidebarCollapsed ? "p-2.5" : "p-4"}`}>
+          {!sidebarCollapsed ? (
+            <div className="flex items-center justify-between mb-4">
+              <Link href="/" className="flex items-center gap-2.5 overflow-hidden">
+                <div className="w-8 h-8 rounded-lg bg-zinc-950 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <Bot className="w-4 h-4 stroke-[2.2]" />
                 </div>
-              )}
-            </Link>
+                <div className="flex flex-col">
+                  <span className="font-semibold text-sm text-zinc-950 tracking-tight">SagotBot</span>
+                  <span className="text-[9px] font-mono text-zinc-500 uppercase">Clinic Ops</span>
+                </div>
+              </Link>
 
-            <button
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="text-slate-500 hover:text-white p-1 rounded-lg hover:bg-white/5 interactive-press"
-            >
-              {sidebarCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-            </button>
-          </div>
+              <button
+                onClick={() => setSidebarCollapsed(true)}
+                className="text-zinc-400 hover:text-zinc-900 p-1.5 rounded-lg hover:bg-zinc-100 interactive-press cursor-pointer"
+                title="Collapse sidebar"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-2 mb-2">
+              <Link href="/" className="w-9 h-9 rounded-xl bg-zinc-950 text-white flex items-center justify-center shrink-0 shadow-xs" title="SagotBot">
+                <Bot className="w-4 h-4 stroke-[2.2]" />
+              </Link>
+              <button
+                onClick={() => setSidebarCollapsed(false)}
+                className="text-zinc-400 hover:text-zinc-900 p-1 rounded-lg hover:bg-zinc-100 interactive-press cursor-pointer"
+                title="Expand sidebar"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
 
           {/* Branch Picker (Multi-Tenancy) */}
           {!sidebarCollapsed ? (
             <div className="relative">
               <button
                 onClick={() => setBranchDropdownOpen(!branchDropdownOpen)}
-                className="w-full p-2.5 rounded-xl bg-slate-900 border border-white/10 hover:border-white/20 flex items-center justify-between text-left text-xs interactive-press cursor-pointer"
+                className="w-full p-2.5 rounded-xl bg-zinc-50 border border-zinc-200 hover:border-zinc-300 flex items-center justify-between text-left text-xs interactive-press cursor-pointer"
               >
                 <div className="flex items-center gap-2 overflow-hidden">
-                  <Building2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <Building2 className="w-4 h-4 text-zinc-700 shrink-0" />
                   <div className="truncate">
-                    <p className="font-semibold text-white truncate">{selectedBranch.name}</p>
-                    <p className="text-[10px] text-slate-400 truncate">{selectedBranch.location}</p>
+                    <p className="font-medium text-zinc-900 truncate">{selectedBranch.name}</p>
+                    <p className="text-[10px] text-zinc-500 truncate">{selectedBranch.location}</p>
                   </div>
                 </div>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                <ChevronDown className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
               </button>
 
               <AnimatePresence>
@@ -115,7 +129,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
-                    className="absolute top-full left-0 right-0 mt-1.5 p-1 rounded-xl bg-slate-900 border border-white/15 shadow-2xl z-50 space-y-1"
+                    className="absolute top-full left-0 right-0 mt-1.5 p-1 rounded-xl bg-white border border-zinc-200 shadow-lg z-50 space-y-1"
                   >
                     {BRANCHES.map((b) => (
                       <button
@@ -126,12 +140,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         }}
                         className={`w-full p-2 rounded-lg text-left text-xs flex flex-col ${
                           selectedBranch.id === b.id
-                            ? "bg-emerald-500/10 text-emerald-400 font-semibold"
-                            : "text-slate-300 hover:bg-white/5"
+                            ? "bg-zinc-100 text-zinc-950 font-semibold"
+                            : "text-zinc-600 hover:bg-zinc-50"
                         }`}
                       >
                         <span>{b.name}</span>
-                        <span className="text-[10px] text-slate-500 font-normal">{b.location}</span>
+                        <span className="text-[10px] text-zinc-400 font-normal">{b.location}</span>
                       </button>
                     ))}
                   </motion.div>
@@ -140,7 +154,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           ) : (
             <div className="w-full flex justify-center">
-              <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-emerald-400 border border-white/10">
+              <div className="w-9 h-9 rounded-xl bg-zinc-100 flex items-center justify-center text-zinc-700 border border-zinc-200/80" title={selectedBranch.name}>
                 <Building2 className="w-4 h-4" />
               </div>
             </div>
@@ -149,7 +163,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* Center: Navigation Links */}
         <motion.nav
-          className="p-3 space-y-1 flex-1 overflow-y-auto"
+          className={`space-y-1.5 flex-1 overflow-y-auto ${sidebarCollapsed ? "p-2" : "p-3"}`}
           variants={sidebarNavContainer}
           initial="hidden"
           animate="show"
@@ -161,18 +175,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <motion.div key={item.name} variants={sidebarNavItem}>
                 <Link
                   href={item.href}
-                  className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-colors duration-150 interactive-press ${
+                  title={sidebarCollapsed ? item.name : undefined}
+                  className={`relative flex items-center rounded-xl text-xs font-medium transition-colors duration-150 interactive-press ${
+                    sidebarCollapsed
+                      ? "justify-center w-10 h-10 mx-auto"
+                      : "gap-3 px-3 py-2.5"
+                  } ${
                     isActive
-                      ? "text-slate-950 bg-emerald-400 font-bold shadow-md shadow-emerald-500/20"
-                      : "text-slate-400 hover:text-white hover:bg-white/5"
+                      ? "text-zinc-950 bg-zinc-100 font-semibold border border-zinc-200/70 shadow-2xs"
+                      : "text-zinc-600 hover:text-zinc-950 hover:bg-zinc-50"
                   }`}
                 >
-                  <Icon className="w-4 h-4 shrink-0" />
+                  <Icon className="w-4 h-4 shrink-0 text-zinc-600" />
                   {!sidebarCollapsed && <span className="flex-1 truncate">{item.name}</span>}
                   {!sidebarCollapsed && item.badge && !isActive && (
-                    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold">
+                    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-blue-50 text-blue-700 font-medium">
                       {item.badge}
                     </span>
+                  )}
+                  {sidebarCollapsed && item.badge && !isActive && (
+                    <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-blue-600" />
                   )}
                 </Link>
               </motion.div>
@@ -181,34 +203,39 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </motion.nav>
 
         {/* Bottom: Profile & Logout */}
-        <div className="p-4 border-t border-white/5">
+        <div className={`border-t border-zinc-200/80 ${sidebarCollapsed ? "p-2" : "p-4"}`}>
           {!sidebarCollapsed ? (
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5 overflow-hidden">
-                <div className="w-8 h-8 rounded-full bg-emerald-950 border border-emerald-500/30 text-emerald-300 font-bold text-xs flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-full bg-zinc-900 text-white font-semibold text-xs flex items-center justify-center shrink-0">
                   DR
                 </div>
                 <div className="truncate text-xs">
-                  <p className="font-semibold text-white truncate">Dr. Reyes, DMD</p>
-                  <p className="text-[10px] text-slate-500 truncate">Clinic Owner</p>
+                  <p className="font-semibold text-zinc-950 truncate">Dr. Reyes, DMD</p>
+                  <p className="text-[10px] text-zinc-500 truncate">Clinic Owner</p>
                 </div>
               </div>
               <button
                 onClick={() => setShowLogoutConfirm(true)}
-                className="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg hover:bg-white/5 transition-colors interactive-press cursor-pointer"
+                className="text-zinc-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-colors interactive-press cursor-pointer"
                 title="Sign out"
               >
                 <LogOut className="w-4 h-4" />
               </button>
             </div>
           ) : (
-            <button
-              onClick={() => setShowLogoutConfirm(true)}
-              className="w-full flex justify-center text-slate-500 hover:text-rose-400 p-2 rounded-lg hover:bg-white/5 interactive-press cursor-pointer"
-              title="Sign out"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-zinc-900 text-white font-semibold text-xs flex items-center justify-center shrink-0 shadow-2xs" title="Dr. Reyes, DMD">
+                DR
+              </div>
+              <button
+                onClick={() => setShowLogoutConfirm(true)}
+                className="w-9 h-9 flex items-center justify-center text-zinc-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 interactive-press cursor-pointer transition-colors"
+                title="Sign out"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
           )}
         </div>
       </motion.aside>
@@ -216,13 +243,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* MAIN VIEWPORT CONTENT */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Real-time Inbound Call Banner */}
-        <div className="px-6 py-2 bg-gradient-to-r from-emerald-950/60 via-slate-900 to-black border-b border-emerald-500/20 flex items-center justify-between text-xs">
+        <div className="px-6 py-2 bg-white border-b border-zinc-200/80 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <AnimatedTooltip
               variant="cora"
-              shapeColor="#0e121e"
-              textColor="#f1f5f9"
-              accentColor="#34d399"
+              shapeColor="#ffffff"
+              textColor="#09090b"
+              accentColor="#2563eb"
               content="SagotBot AI Telephony Engine is online. Answering Taglish calls in 1 ring with zero dropped calls."
             >
               <div className="flex items-center gap-2 cursor-pointer py-0.5">
@@ -230,24 +257,24 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
-                <span className="font-mono text-emerald-400 font-semibold text-[11px]">
+                <span className="font-mono text-zinc-900 font-semibold text-[11px]">
                   AI Telephony Status: Online
                 </span>
               </div>
             </AnimatedTooltip>
-            <span className="text-slate-400 text-[11px] hidden sm:inline">
+            <span className="text-zinc-500 text-[11px] hidden sm:inline">
               • Answering calls for {selectedBranch.name}
             </span>
           </div>
-          <div className="flex items-center gap-3 text-[10px] text-slate-400 font-mono">
+          <div className="flex items-center gap-3 text-[10px] text-zinc-500 font-mono">
             <AnimatedTooltip
               variant="smaug"
-              shapeColor="#0e121e"
-              textColor="#f1f5f9"
-              accentColor="#38bdf8"
+              shapeColor="#ffffff"
+              textColor="#09090b"
+              accentColor="#2563eb"
               content="Clinic scheduling is locked to Philippine Standard Time (UTC+8) across all doctor calendars."
             >
-              <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 hover:border-white/20 text-slate-300 cursor-pointer">
+              <span className="px-2 py-0.5 rounded-full bg-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-700 cursor-pointer">
                 PST (UTC+8)
               </span>
             </AnimatedTooltip>
@@ -257,7 +284,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* View Contents */}
         <motion.main
-          className="flex-1 overflow-y-auto p-6 sm:p-8"
+          className="flex-1 overflow-y-auto p-6 sm:p-8 bg-[#f8f8f9]"
           initial={{ opacity: 0, transform: "translateY(12px)" }}
           animate={{ opacity: 1, transform: "translateY(0px)" }}
           transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
@@ -277,36 +304,32 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowLogoutConfirm(false)}
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/30 backdrop-blur-xs"
             />
 
             {/* Modal Dialog */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              initial={{ opacity: 0, scale: 0.95, y: 8 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-              className="relative w-full max-w-sm rounded-2xl bg-[#0e111a] border border-white/10 p-6 shadow-2xl text-left space-y-4 z-10"
+              exit={{ opacity: 0, scale: 0.95, y: 8 }}
+              transition={{ duration: 0.18, ease: [0.23, 1, 0.32, 1] }}
+              className="relative w-full max-w-xs rounded-2xl bg-white border border-zinc-200 p-5 shadow-lg text-left space-y-3.5 z-10"
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
-                  <LogOut className="w-5 h-5" />
+                <div className="w-8 h-8 rounded-lg bg-zinc-100 text-zinc-900 flex items-center justify-center shrink-0">
+                  <LogOut className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Sign out of SagotBot?</h3>
-                  <p className="text-xs text-slate-400 mt-0.5">Smiles Dental Clinic - BGC</p>
+                  <h3 className="text-sm font-bold text-zinc-950">Sign out?</h3>
+                  <p className="text-xs text-zinc-500">Are you sure you want to exit?</p>
                 </div>
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed">
-                You will be signed out of your clinic receptionist console. Your active AI phone receptionists will continue taking patient calls 24/7.
-              </p>
-
-              <div className="flex items-center justify-end gap-2.5 pt-2">
+              <div className="flex items-center justify-end gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => setShowLogoutConfirm(false)}
-                  className="px-4 py-2 rounded-xl border border-white/10 hover:border-white/20 text-slate-300 hover:text-white text-xs font-semibold interactive-press transition-colors cursor-pointer"
+                  className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:bg-zinc-50 text-zinc-700 text-xs font-medium interactive-press transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -316,9 +339,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     setShowLogoutConfirm(false);
                     router.push("/login");
                   }}
-                  className="px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-semibold shadow-lg shadow-rose-500/25 interactive-press transition-colors cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-lg bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-medium shadow-2xs interactive-press transition-colors cursor-pointer"
                 >
-                  Yes, Sign Out
+                  Sign Out
                 </button>
               </div>
             </motion.div>

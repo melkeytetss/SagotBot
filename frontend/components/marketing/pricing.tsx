@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Check, Sparkles, ArrowRight } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
@@ -11,97 +11,82 @@ export function Pricing() {
 
   const tiers = [
     {
-      name: "Starter Clinic",
-      desc: "Ideal for solo dental practitioners and boutique aesthetic studios.",
+      name: "Starter",
+      desc: "For solo operators, freelancers & boutique studios.",
       monthlyPrice: 3999,
       annualPrice: 3199,
-      minutes: "100 AI voice minutes/mo",
       popular: false,
       features: [
-        "100 AI phone receptionist minutes",
-        "Taglish & English NLP voice engine",
-        "1 Google Calendar sync",
-        "Instant SMS confirmation to callers",
-        "Basic call summaries & transcripts",
-        "Standard email support",
+        "100 AI voice minutes/mo",
+        "Taglish voice engine",
+        "Google Calendar booking",
+        "Instant SMS confirmation",
       ],
-      cta: "Start 14-Day Trial",
-      href: "/signup",
+      cta: "Start Free Trial",
     },
     {
-      name: "Pro Clinic",
-      desc: "For busy clinics with high call volume, multiple doctors, and HMO patients.",
+      name: "Pro",
+      desc: "For growing businesses, multi-staff teams & service providers.",
       monthlyPrice: 7999,
       annualPrice: 6399,
-      minutes: "350 AI voice minutes/mo",
       popular: true,
       features: [
-        "350 AI phone receptionist minutes",
-        "All Starter features included",
-        "Multi-doctor & room calendar sync",
-        "Real-time Google Sheet logging",
-        "Philippine HMO qualification (Maxicare, etc.)",
-        "Call recording playback & transcripts",
-        "Priority WhatsApp & phone support",
+        "350 AI voice minutes/mo",
+        "Multi-staff calendar sync",
+        "Custom FAQs & lead qualification",
+        "Call recordings & transcripts",
       ],
-      cta: "Launch Pro Trial",
-      href: "/signup",
+      cta: "Start Free Trial",
     },
     {
-      name: "Multi-Branch Group",
-      desc: "For dental hospital chains, medical groups, and franchised salons.",
+      name: "Enterprise",
+      desc: "For multi-branch chains, franchises & high-volume organizations.",
       monthlyPrice: 15999,
       annualPrice: 12799,
-      minutes: "1,000 AI voice minutes/mo",
       popular: false,
       features: [
-        "1,000 AI phone receptionist minutes",
-        "All Pro features included",
-        "Multi-tenant branch management",
-        "Dedicated PBX / SIP trunk forwarding",
-        "Custom doctor voice & clinic persona",
-        "Custom API & EHR integration support",
-        "Dedicated account manager",
+        "1,000 AI voice minutes/mo",
+        "Multi-branch tenant routing",
+        "Dedicated PBX / SIP trunk",
+        "Custom brand voice persona",
       ],
-      cta: "Contact Enterprise",
-      href: "/signup",
+      cta: "Contact Sales",
     },
   ];
 
   return (
-    <div className="w-full max-w-6xl mx-auto py-16 px-4" id="pricing">
+    <div className="w-full max-w-5xl mx-auto py-16 px-4" id="pricing">
       <div className="text-center max-w-xl mx-auto mb-10">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-3">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Simple, Predictable Plans</span>
-        </div>
-        <h3 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-          Invest once. Recover dozens of lost patients every month.
+        <span className="text-xs uppercase tracking-widest text-blue-600 font-mono font-semibold">
+          Pricing
+        </span>
+        <h3 className="text-3xl font-bold text-zinc-950 tracking-tight mt-1">
+          Simple, transparent plans
         </h3>
-        <p className="text-xs sm:text-sm text-slate-400 mt-2">
-          One saved root canal or braces inquiry covers your entire monthly subscription.
+        <p className="text-xs sm:text-sm text-zinc-600 mt-1.5">
+          14-day free trial. No credit card required.
         </p>
 
         {/* Monthly vs Annual Toggle */}
         <div className="flex items-center justify-center gap-3 mt-6">
-          <span className={`text-xs font-medium ${!annual ? "text-white" : "text-slate-400"}`}>
+          <span className={`text-xs font-medium ${!annual ? "text-zinc-950 font-semibold" : "text-zinc-500"}`}>
             Monthly
           </span>
           <button
             onClick={() => setAnnual(!annual)}
-            className="w-12 h-6 rounded-full bg-slate-800 p-0.5 relative transition-colors cursor-pointer interactive-press"
+            className="w-11 h-6 rounded-full bg-zinc-200 p-0.5 relative transition-colors cursor-pointer interactive-press"
           >
             <motion.div
-              animate={{ x: annual ? 24 : 0 }}
+              animate={{ x: annual ? 20 : 0 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="w-5 h-5 rounded-full bg-emerald-400 shadow-md"
+              className="w-5 h-5 rounded-full bg-zinc-900 shadow-xs"
             />
           </button>
           <div className="flex items-center gap-1.5">
-            <span className={`text-xs font-medium ${annual ? "text-white" : "text-slate-400"}`}>
-              Yearly
+            <span className={`text-xs font-medium ${annual ? "text-zinc-950 font-semibold" : "text-zinc-500"}`}>
+              Annual
             </span>
-            <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+            <span className="text-[10px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 font-mono">
               Save 20%
             </span>
           </div>
@@ -109,64 +94,58 @@ export function Pricing() {
       </div>
 
       {/* Pricing Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
         {tiers.map((tier, i) => {
           const price = annual ? tier.annualPrice : tier.monthlyPrice;
           return (
-            <ScrollReveal key={tier.name} delay={i * 0.1} amount={0.05}>
+            <ScrollReveal key={tier.name} delay={i * 0.08} amount={0.05}>
               <div
-                className={`relative flex flex-col justify-between h-full p-7 rounded-3xl cursor-pointer hover-lift ${
+                className={`relative flex flex-col justify-between h-full p-6 rounded-2xl transition-all duration-200 ${
                   tier.popular
-                    ? "bg-gradient-to-b from-[#181b29] to-[#0e101a] border-2 border-emerald-500/60 shadow-2xl shadow-emerald-500/15 z-10"
-                    : "bg-slate-900/60 border border-white/10 hover:border-emerald-500/30 hover-glow shadow-lg transition-colors duration-200"
+                    ? "bg-white border-2 border-zinc-950 shadow-sm"
+                    : "bg-white border border-zinc-200/80 hover:border-zinc-300 shadow-2xs"
                 }`}
               >
                 {tier.popular && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-emerald-500 text-slate-950 font-bold text-[10px] tracking-wide uppercase shadow-lg shadow-emerald-500/30">
-                    Most Popular for Clinics
+                  <div className="absolute -top-3 left-6 px-3 py-0.5 rounded-full bg-zinc-950 text-white font-medium text-[10px] tracking-wide uppercase">
+                    Popular
                   </div>
                 )}
 
                 <div>
-                  <h4 className="text-lg font-bold text-white">{tier.name}</h4>
-                  <p className="text-xs text-slate-400 mt-1 min-h-[32px]">{tier.desc}</p>
+                  <h4 className="text-base font-bold text-zinc-950">{tier.name}</h4>
+                  <p className="text-xs text-zinc-500 mt-1 min-h-[32px]">{tier.desc}</p>
 
-                  <div className="my-5 pb-5 border-b border-white/10">
+                  <div className="my-4 pb-4 border-b border-zinc-100">
                     <div className="flex items-baseline gap-1">
-                      <span className="text-3xl font-black text-white font-mono">
+                      <span className="text-3xl font-bold text-zinc-950 font-mono">
                         ₱{price.toLocaleString("en-US")}
                       </span>
-                      <span className="text-xs text-slate-400">/ month</span>
+                      <span className="text-xs text-zinc-500">/mo</span>
                     </div>
-                    <span className="text-[11px] text-emerald-400 font-mono mt-1 block">
-                      {tier.minutes}
-                    </span>
                   </div>
 
-                  <div className="space-y-2.5">
-                    <p className="text-xs font-semibold text-slate-300">Included features:</p>
-                    {tier.features.map((feat, fi) => (
-                      <div key={fi} className="flex items-start gap-2.5 text-xs text-slate-300">
-                        <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5 stroke-[2.5]" />
+                  <ul className="space-y-2.5 text-xs text-zinc-600 mb-6">
+                    {tier.features.map((feat) => (
+                      <li key={feat} className="flex items-center gap-2">
+                        <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                         <span>{feat}</span>
-                      </div>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
 
-                <div className="pt-8">
-                  <Link
-                    href={tier.href}
-                    className={`w-full py-3 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 interactive-press transition-colors duration-150 ${
-                      tier.popular
-                        ? "bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-lg shadow-emerald-500/25"
-                        : "bg-white/10 hover:bg-white/15 text-white"
-                    }`}
-                  >
-                    <span>{tier.cta}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
+                <Link
+                  href="/signup"
+                  className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-center transition-all duration-150 interactive-press cursor-pointer flex items-center justify-center gap-1.5 ${
+                    tier.popular
+                      ? "bg-zinc-950 hover:bg-zinc-800 text-white"
+                      : "bg-zinc-100 hover:bg-zinc-200 text-zinc-900 border border-zinc-200/80"
+                  }`}
+                >
+                  <span>{tier.cta}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
             </ScrollReveal>
           );
@@ -175,3 +154,5 @@ export function Pricing() {
     </div>
   );
 }
+
+export default Pricing;

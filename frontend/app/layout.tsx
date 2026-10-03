@@ -13,19 +13,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SagotBot - AI Phone Receptionist for Philippine Clinics",
-  description: "The AI phone receptionist that speaks fluent Taglish. Answers 100% of clinic inquiries, verifies HMO coverage, and books slots straight into your Google Calendar.",
+  title: "SagotBot - AI Phone Receptionist for Philippine Businesses",
+  description: "The AI phone receptionist that speaks fluent Taglish. Answers 100% of customer inquiries, qualifies leads, and books appointments straight into your Google Calendar.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className="h-full antialiased font-sans"
+      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+      <body
+        className="min-h-full flex flex-col font-sans"
+        style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>

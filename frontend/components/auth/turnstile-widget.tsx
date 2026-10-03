@@ -21,41 +21,42 @@ export function TurnstileWidget({ onVerify, className = "" }: TurnstileWidgetPro
       if (onVerify) {
         onVerify("cf-turnstile-verified-token-ph-clinic");
       }
-    }, 700);
+    }, 600);
   };
 
   return (
     <div
       onClick={handleVerify}
-      className={`flex items-center justify-between p-3 rounded-xl border border-white/10 bg-slate-900/60 backdrop-blur-md cursor-pointer hover:border-emerald-500/40 transition-colors select-none ${className}`}
+      className={`flex items-center justify-between p-2.5 rounded-xl border border-zinc-200 bg-zinc-50/70 hover:bg-zinc-100/60 cursor-pointer transition-colors select-none ${className}`}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5">
         <div
-          className={`w-6 h-6 rounded-md border flex items-center justify-center transition-all ${
+          className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all ${
             verified
-              ? "bg-emerald-500 border-emerald-400 text-slate-950"
+              ? "bg-zinc-950 border-zinc-950 text-white"
               : verifying
-              ? "border-emerald-500 animate-spin"
-              : "border-white/30 bg-slate-800/80"
+              ? "border-zinc-900 animate-spin"
+              : "border-zinc-300 bg-white"
           }`}
         >
           {verified ? (
-            <Check className="w-4 h-4 stroke-[3]" />
+            <Check className="w-3.5 h-3.5 stroke-[2.5]" />
           ) : verifying ? (
-            <div className="w-2.5 h-2.5 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+            <div className="w-2 h-2 border-2 border-zinc-900 border-t-transparent rounded-full animate-spin" />
           ) : null}
         </div>
         <div className="text-xs">
-          <p className="font-medium text-slate-200">
-            {verified ? "Verification successful" : "Verify you are human"}
+          <p className="font-medium text-zinc-800">
+            {verified ? "Verification passed" : "I am human"}
           </p>
-          <p className="text-[10px] text-slate-400">Protected by Cloudflare Turnstile</p>
         </div>
       </div>
-      <div className="flex items-center gap-1.5 text-slate-400">
-        <ShieldCheck className="w-4 h-4 text-emerald-400" />
-        <span className="text-[10px] tracking-wide font-mono text-slate-400">SECURE</span>
+      <div className="flex items-center gap-1 text-zinc-400">
+        <ShieldCheck className="w-3.5 h-3.5 text-zinc-600" />
+        <span className="text-[10px] font-mono text-zinc-500">Cloudflare</span>
       </div>
     </div>
   );
 }
+
+export default TurnstileWidget;

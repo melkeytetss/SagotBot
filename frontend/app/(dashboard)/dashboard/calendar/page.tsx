@@ -156,13 +156,13 @@ export function CalendarPage() {
         <div>
           <div className="flex items-center gap-2">
             <FlipText
-              className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white"
+              className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-950"
               duration={1.8}
             >
               Clinic Calendar & Schedule
             </FlipText>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-zinc-500 mt-1">
             Real-time synchronization with Google Calendar. Every AI call booking automatically locks the doctor&apos;s slot.
           </p>
         </div>
@@ -170,9 +170,10 @@ export function CalendarPage() {
         <div className="flex items-center gap-3">
           <CandyButton
             onClick={() => setModalOpen(true)}
-            className="py-2.5 px-4 text-xs font-bold flex items-center gap-2 shadow-lg shadow-emerald-500/20"
+            variant="black"
+            className="py-2.5 px-4 text-xs font-semibold flex items-center gap-2 shadow-xs"
           >
-            <Plus className="w-4 h-4 stroke-[3]" />
+            <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Add Walk-in Appointment</span>
           </CandyButton>
         </div>
@@ -184,41 +185,41 @@ export function CalendarPage() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="p-3.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2 shadow-lg shadow-emerald-500/10"
+          className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-xs flex items-center gap-2 shadow-sm"
         >
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+          <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
           <span>{toastMessage}</span>
         </motion.div>
       )}
 
       {/* Date Navigation & Doctor Filter */}
-      <div className="p-4 rounded-2xl bg-slate-900 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
             <button
               onClick={() => showToast("Showing schedule for Previous Week")}
-              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-600 hover:text-zinc-950 transition-colors cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => showToast("Showing schedule for Next Week")}
-              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-600 hover:text-zinc-950 transition-colors cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
-          <span className="text-sm font-bold text-white font-mono">
+          <span className="text-sm font-semibold text-zinc-950 font-mono">
             October 2026 • Smiles Dental Clinic BGC
           </span>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-400">Doctor Filter:</span>
+          <span className="text-xs text-zinc-500">Doctor Filter:</span>
           <select
             value={selectedDoctorFilter}
             onChange={(e) => setSelectedDoctorFilter(e.target.value)}
-            className="px-3 py-1.5 bg-slate-800 border border-white/10 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-emerald-500 cursor-pointer"
+            className="px-3 py-1.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-700 focus:outline-none focus:border-zinc-900 cursor-pointer shadow-2xs"
           >
             <option value="All">All Doctors (Dr. Reyes & Dr. Santos)</option>
             <option value="Dr. Reyes">Dr. Reyes, DMD (General & Surgery)</option>
@@ -232,26 +233,26 @@ export function CalendarPage() {
         {filteredAppointments.map((apt) => (
           <div
             key={apt.id}
-            className="p-5 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-emerald-500/30 transition-all shadow-lg space-y-4 group"
+            className="p-5 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-2xs space-y-4 group hover:-translate-y-0.5"
           >
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                   <Stethoscope className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-white group-hover:text-emerald-300 transition-colors">
+                  <h3 className="font-bold text-sm text-zinc-950 group-hover:text-blue-600 transition-colors">
                     {apt.patientName}
                   </h3>
-                  <p className="text-[10px] font-mono text-slate-400">{apt.patientPhone}</p>
+                  <p className="text-[10px] font-mono text-zinc-400">{apt.patientPhone}</p>
                 </div>
               </div>
 
               <span
-                className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                className={`text-[9px] font-mono font-medium px-2 py-0.5 rounded-full ${
                   apt.origin === "AI Phone Call"
-                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                    : "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                    ? "bg-blue-50 text-blue-700 border border-blue-200"
+                    : "bg-zinc-100 text-zinc-700 border border-zinc-200"
                 }`}
               >
                 {apt.origin}
@@ -259,23 +260,23 @@ export function CalendarPage() {
             </div>
 
             <div className="space-y-1.5 text-xs">
-              <div className="flex items-center gap-2 text-slate-300">
-                <Clock className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span className="font-mono text-[11px] font-semibold">{apt.time}</span>
-                <span className="text-slate-500 text-[10px]">({apt.date})</span>
+              <div className="flex items-center gap-2 text-zinc-700">
+                <Clock className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                <span className="font-mono text-[11px] font-semibold text-zinc-900">{apt.time}</span>
+                <span className="text-zinc-400 text-[10px]">({apt.date})</span>
               </div>
-              <p className="text-xs text-emerald-300 font-medium pl-5">{apt.service}</p>
-              <p className="text-[11px] text-slate-400 pl-5">Attending: {apt.doctor}</p>
+              <p className="text-xs text-blue-700 font-medium pl-5">{apt.service}</p>
+              <p className="text-[11px] text-zinc-500 pl-5">Attending: {apt.doctor}</p>
             </div>
 
-            <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px]">
-              <span className="inline-flex items-center gap-1 text-emerald-400 font-mono text-[10px]">
+            <div className="pt-2 border-t border-zinc-100 flex items-center justify-between text-[11px]">
+              <span className="inline-flex items-center gap-1 text-blue-600 font-mono text-[10px] font-medium">
                 <CheckCircle2 className="w-3 h-3" />
                 Synced to Google Calendar
               </span>
               <button
                 onClick={() => setRescheduleApt(apt)}
-                className="text-xs text-emerald-400 hover:text-emerald-300 font-medium transition-colors cursor-pointer"
+                className="text-xs text-blue-600 hover:text-blue-700 font-medium transition-colors cursor-pointer"
               >
                 Reschedule
               </button>
@@ -293,40 +294,40 @@ export function CalendarPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setRescheduleApt(null)}
-              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+              className="fixed inset-0 bg-black/30 backdrop-blur-xs z-50 flex items-center justify-center p-4"
             >
               <motion.div
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
-                className="w-full max-w-md p-6 rounded-3xl bg-slate-900 border border-white/10 shadow-2xl space-y-4"
+                className="w-full max-w-md p-6 rounded-3xl bg-white border border-zinc-200 shadow-xl space-y-4"
               >
-                <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
                   <div>
-                    <h3 className="font-bold text-base text-white">Reschedule Appointment</h3>
-                    <p className="text-xs text-slate-400">{rescheduleApt.patientName} • {rescheduleApt.service}</p>
+                    <h3 className="font-bold text-base text-zinc-950">Reschedule Appointment</h3>
+                    <p className="text-xs text-zinc-500">{rescheduleApt.patientName} • {rescheduleApt.service}</p>
                   </div>
                   <button
                     onClick={() => setRescheduleApt(null)}
-                    className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/5"
+                    className="text-zinc-400 hover:text-zinc-700 p-1 rounded-lg hover:bg-zinc-100"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
 
                 <div className="space-y-3 text-xs">
-                  <div className="p-3 rounded-xl bg-slate-950 border border-white/5 space-y-1">
-                    <span className="text-[10px] text-slate-500 font-mono">Current Slot:</span>
-                    <p className="text-slate-200 font-mono font-medium">{rescheduleApt.time} ({rescheduleApt.date})</p>
+                  <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
+                    <span className="text-[10px] text-zinc-400 font-mono">Current Slot:</span>
+                    <p className="text-zinc-800 font-mono font-medium">{rescheduleApt.time} ({rescheduleApt.date})</p>
                   </div>
 
                   <div>
-                    <label className="block text-slate-300 mb-1">Select New Time Slot</label>
+                    <label className="block text-zinc-700 mb-1 font-medium">Select New Time Slot</label>
                     <select
                       value={newRescheduleTime}
                       onChange={(e) => setNewRescheduleTime(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white font-mono focus:outline-none focus:border-emerald-500 cursor-pointer"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 font-mono focus:outline-none focus:border-zinc-900 cursor-pointer"
                     >
                       <option value="11:30 AM - 12:15 PM">11:30 AM - 12:15 PM (Available)</option>
                       <option value="2:00 PM - 2:45 PM">2:00 PM - 2:45 PM (Available)</option>
@@ -335,8 +336,8 @@ export function CalendarPage() {
                     </select>
                   </div>
 
-                  <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[11px] text-emerald-300 flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-800 flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
                     <span>Chair buffer verified: No calendar overlaps detected.</span>
                   </div>
 
@@ -344,13 +345,14 @@ export function CalendarPage() {
                     <button
                       type="button"
                       onClick={() => handleCancelAppointment(rescheduleApt.id, rescheduleApt.patientName)}
-                      className="px-4 py-2.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 font-medium hover:bg-rose-500/25 transition-colors cursor-pointer"
+                      className="px-4 py-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 font-medium hover:bg-rose-100 transition-colors cursor-pointer"
                     >
                       Cancel Booking
                     </button>
                     <CandyButton
                       onClick={handleConfirmReschedule}
-                      className="flex-1 py-2.5 text-xs font-bold justify-center"
+                      variant="black"
+                      className="flex-1 py-2.5 text-xs font-semibold justify-center"
                     >
                       Update Schedule
                     </CandyButton>
@@ -371,20 +373,20 @@ export function CalendarPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setModalOpen(false)}
-              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+              className="fixed inset-0 bg-black/30 backdrop-blur-xs z-50 flex items-center justify-center p-4"
             >
               <motion.div
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
-                className="w-full max-w-md p-6 rounded-3xl bg-slate-900 border border-white/10 shadow-2xl space-y-4"
+                className="w-full max-w-md p-6 rounded-3xl bg-white border border-zinc-200 shadow-xl space-y-4"
               >
-                <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                  <h3 className="font-bold text-base text-white">Manual Patient Booking</h3>
+                <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
+                  <h3 className="font-bold text-base text-zinc-950">Manual Patient Booking</h3>
                   <button
                     onClick={() => setModalOpen(false)}
-                    className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/5"
+                    className="text-zinc-400 hover:text-zinc-700 p-1 rounded-lg hover:bg-zinc-100"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -392,36 +394,36 @@ export function CalendarPage() {
 
                 <form onSubmit={handleAddAppointment} className="space-y-3 text-xs">
                   <div>
-                    <label className="block text-slate-300 mb-1">Patient Full Name</label>
+                    <label className="block text-zinc-700 mb-1 font-medium">Patient Full Name</label>
                     <input
                       type="text"
                       required
                       value={patientName}
                       onChange={(e) => setPatientName(e.target.value)}
                       placeholder="e.g. Liza Soberano"
-                      className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-500"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none focus:border-zinc-900"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-slate-300 mb-1">Contact Number (PH Mobile)</label>
+                    <label className="block text-zinc-700 mb-1 font-medium">Contact Number (PH Mobile)</label>
                     <input
                       type="tel"
                       required
                       value={patientPhone}
                       onChange={(e) => setPatientPhone(e.target.value)}
                       placeholder="+63 917 123 4567"
-                      className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white font-mono focus:outline-none focus:border-emerald-500"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 font-mono focus:outline-none focus:border-zinc-900"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-slate-300 mb-1">Procedure</label>
+                      <label className="block text-zinc-700 mb-1 font-medium">Procedure</label>
                       <select
                         value={service}
                         onChange={(e) => setService(e.target.value)}
-                        className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white focus:outline-none"
+                        className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none"
                       >
                         <option>Oral Prophylaxis (Cleaning)</option>
                         <option>Tooth Extraction</option>
@@ -432,11 +434,11 @@ export function CalendarPage() {
                     </div>
 
                     <div>
-                      <label className="block text-slate-300 mb-1">HMO Coverage</label>
+                      <label className="block text-zinc-700 mb-1 font-medium">HMO Coverage</label>
                       <select
                         value={hmoProvider}
                         onChange={(e) => setHmoProvider(e.target.value)}
-                        className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white focus:outline-none"
+                        className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none"
                       >
                         <option>None (Direct Cash)</option>
                         <option>Maxicare (Accredited)</option>
@@ -449,11 +451,11 @@ export function CalendarPage() {
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-slate-300 mb-1">Attending Doctor</label>
+                      <label className="block text-zinc-700 mb-1 font-medium">Attending Doctor</label>
                       <select
                         value={doctor}
                         onChange={(e) => setDoctor(e.target.value)}
-                        className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white focus:outline-none"
+                        className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none"
                       >
                         <option>Dr. Reyes, DMD</option>
                         <option>Dr. Santos, Cosmetic</option>
@@ -461,11 +463,11 @@ export function CalendarPage() {
                     </div>
 
                     <div>
-                      <label className="block text-slate-300 mb-1">Time Slot</label>
+                      <label className="block text-zinc-700 mb-1 font-medium">Time Slot</label>
                       <select
                         value={timeSlot}
                         onChange={(e) => setTimeSlot(e.target.value)}
-                        className="w-full px-3 py-2 bg-slate-950 border border-white/10 rounded-xl text-white font-mono focus:outline-none"
+                        className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 font-mono focus:outline-none"
                       >
                         <option>10:00 AM - 10:45 AM</option>
                         <option>11:30 AM - 12:15 PM</option>
@@ -479,13 +481,14 @@ export function CalendarPage() {
                     <button
                       type="button"
                       onClick={() => setModalOpen(false)}
-                      className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-medium interactive-press cursor-pointer"
+                      className="flex-1 py-2.5 rounded-xl border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 text-zinc-700 font-medium interactive-press cursor-pointer"
                     >
                       Cancel
                     </button>
                     <CandyButton
                       type="submit"
-                      className="flex-1 py-2.5 text-xs font-bold justify-center"
+                      variant="black"
+                      className="flex-1 py-2.5 text-xs font-semibold justify-center"
                     >
                       Confirm Booking
                     </CandyButton>

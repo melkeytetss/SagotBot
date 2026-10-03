@@ -1,71 +1,204 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
-import { Bot, PhoneCall, ShieldCheck, Heart } from "lucide-react";
+import { Bot, ArrowUpRight, ShieldCheck, Globe2 } from "lucide-react";
 
 export function MarketingFooter() {
+  const scrollTo = (id: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 88;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  };
+
   return (
-    <footer className="w-full border-t border-white/10 bg-[#07080c] py-12 px-6 text-slate-400">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 text-xs">
-        {/* Brand Col */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-emerald-500 flex items-center justify-center text-slate-950 font-bold">
-              <Bot className="w-4 h-4 stroke-[2.5]" />
+    <footer className="w-full border-t border-zinc-200/80 bg-[#f8f8f9] text-zinc-600 font-sans">
+      {/* Main SaaS Navigation Grid */}
+      <div className="max-w-6xl mx-auto px-6 pt-16 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-12">
+          {/* Brand & Mission (4 Columns) */}
+          <div className="md:col-span-4 space-y-4">
+            <Link href="/" className="inline-flex items-center gap-2.5 group">
+              <div className="w-8 h-8 rounded-lg bg-zinc-950 text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform duration-150">
+                <Bot className="w-4 h-4 stroke-[2.2]" />
+              </div>
+              <span className="text-base font-bold tracking-tight text-zinc-950">SagotBot</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white border border-zinc-200 text-zinc-600">
+                PH Business AI
+              </span>
+            </Link>
+
+            <p className="text-xs text-zinc-500 leading-relaxed max-w-sm">
+              The AI phone receptionist engineered for Philippine businesses. Answers customer inquiries 24/7 in fluent Taglish, qualifies leads, and syncs directly with Google Calendar.
+            </p>
+
+            {/* Live Infrastructure Status */}
+            <div className="pt-1 flex flex-col gap-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-zinc-200/80 text-zinc-700 text-xs shadow-2xs w-fit">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="font-mono text-[11px]">Telephony Online: 99.98% Uptime</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 font-mono">
+                <Globe2 className="w-3.5 h-3.5 text-zinc-400" />
+                <span>BGC, Taguig City • Metro Manila, Philippines</span>
+              </div>
             </div>
-            <span className="text-base font-bold text-white tracking-tight">SagotBot</span>
           </div>
-          <p className="text-slate-500 leading-relaxed text-[11px]">
-            The AI phone receptionist that speaks fluent Taglish. Built proudly for Philippine dental clinics, salons, and SME businesses.
-          </p>
-          <div className="flex items-center gap-2 text-[10px] text-emerald-400 font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>99.98% Telephony Uptime in PH</span>
+
+          {/* SaaS Navigation Columns (8 Columns: 4 x 2) */}
+          <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
+            {/* Column 1: Product */}
+            <div className="space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-zinc-950 font-mono">
+                Product
+              </p>
+              <ul className="space-y-2 text-xs">
+                <li>
+                  <a href="#live-demo" onClick={scrollTo("live-demo")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    Live Phone Demo
+                  </a>
+                </li>
+                <li>
+                  <a href="#features" onClick={scrollTo("features")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    Taglish Voice AI
+                  </a>
+                </li>
+                <li>
+                  <a href="#features" onClick={scrollTo("features")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    FAQ & Lead Qualification
+                  </a>
+                </li>
+                <li>
+                  <a href="#features" onClick={scrollTo("features")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    Calendar Lock
+                  </a>
+                </li>
+                <li>
+                  <a href="#roi-calculator" onClick={scrollTo("roi-calculator")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    ROI Calculator
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 2: Industries */}
+            <div className="space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-zinc-950 font-mono">
+                Industries
+              </p>
+              <ul className="space-y-2 text-xs">
+                <li>
+                  <a href="#features" onClick={scrollTo("features")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    Clinics & Wellness
+                  </a>
+                </li>
+                <li>
+                  <a href="#features" onClick={scrollTo("features")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    Salons & Spas
+                  </a>
+                </li>
+                <li>
+                  <a href="#features" onClick={scrollTo("features")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    Professional Services
+                  </a>
+                </li>
+                <li>
+                  <a href="#features" onClick={scrollTo("features")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    Restaurants & Cafes
+                  </a>
+                </li>
+                <li>
+                  <a href="#features" onClick={scrollTo("features")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    Real Estate & Retail
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 3: Integrations */}
+            <div className="space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-zinc-950 font-mono">
+                Integrations
+              </p>
+              <ul className="space-y-2 text-xs">
+                <li>
+                  <span className="text-zinc-600">Google Calendar</span>
+                </li>
+                <li>
+                  <span className="text-zinc-600">Google Sheets</span>
+                </li>
+                <li>
+                  <span className="text-zinc-600">Globe Forwarding</span>
+                </li>
+                <li>
+                  <span className="text-zinc-600">Smart / PLDT Trunk</span>
+                </li>
+                <li>
+                  <span className="text-zinc-600">SMS Notifications</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 4: Account & Trust */}
+            <div className="space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-zinc-950 font-mono">
+                Platform
+              </p>
+              <ul className="space-y-2 text-xs">
+                <li>
+                  <a href="#pricing" onClick={scrollTo("pricing")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    Pricing Plans
+                  </a>
+                </li>
+                <li>
+                  <a href="#faq" onClick={scrollTo("faq")} className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    Platform FAQs
+                  </a>
+                </li>
+                <li>
+                  <Link href="/login" className="text-zinc-600 hover:text-zinc-950 transition-colors font-medium">
+                    Console Sign In
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/dashboard" className="text-zinc-600 hover:text-zinc-950 transition-colors">
+                    Business Dashboard
+                  </Link>
+                </li>
+                <li className="flex items-center gap-1 text-zinc-500 pt-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                  <span className="text-[11px] font-mono">DPA 2012 Secure</span>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-
-        {/* Product Links */}
-        <div className="space-y-2">
-          <p className="text-white font-semibold uppercase tracking-wider text-[10px]">Product</p>
-          <ul className="space-y-1.5 text-[11px]">
-            <li><a href="#live-demo" className="hover:text-emerald-400 transition-colors link-hover-underline">Web Phone Simulator</a></li>
-            <li><a href="#features" className="hover:text-emerald-400 transition-colors link-hover-underline">Taglish Speech Engine</a></li>
-            <li><a href="#roi-calculator" className="hover:text-emerald-400 transition-colors link-hover-underline">Clinic ROI Calculator</a></li>
-            <li><a href="#pricing" className="hover:text-emerald-400 transition-colors link-hover-underline">Plans & Packages</a></li>
-          </ul>
-        </div>
-
-        {/* Industry Verticals */}
-        <div className="space-y-2">
-          <p className="text-white font-semibold uppercase tracking-wider text-[10px]">Industries</p>
-          <ul className="space-y-1.5 text-[11px]">
-            <li><a href="#verticals" className="hover:text-emerald-400 transition-colors link-hover-underline">Dental Clinics</a></li>
-            <li><a href="#verticals" className="hover:text-emerald-400 transition-colors link-hover-underline">Aesthetic Centers & Salons</a></li>
-            <li><a href="#verticals" className="hover:text-emerald-400 transition-colors link-hover-underline">Restaurants & Bars</a></li>
-            <li><a href="#verticals" className="hover:text-emerald-400 transition-colors link-hover-underline">Multi-Branch Chains</a></li>
-          </ul>
-        </div>
-
-        {/* Compliance & Security */}
-        <div className="space-y-2">
-          <p className="text-white font-semibold uppercase tracking-wider text-[10px]">Security & Legal</p>
-          <ul className="space-y-1.5 text-[11px]">
-            <li className="flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Multi-Tenant Supabase RLS</span>
-            </li>
-            <li><span>Philippine Data Privacy Act Compliant</span></li>
-            <li><span>Google Cloud Enterprise OAuth</span></li>
-            <li><span>Cloudflare Bot Mitigation</span></li>
-          </ul>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-3">
-        <p>© 2026 SagotBot Inc. Metro Manila, Philippines. All rights reserved.</p>
-        <p className="flex items-center gap-1">
-          Made with <Heart className="w-3 h-3 text-rose-500 fill-rose-500" /> for Philippine SME clinics
-        </p>
+      {/* Modern SaaS Bottom Legal Bar */}
+      <div className="border-t border-zinc-200/70 bg-[#f8f8f9]">
+        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+          <div className="flex items-center gap-3">
+            <span>© {new Date().getFullYear()} SagotBot Inc.</span>
+            <span className="text-zinc-300">•</span>
+            <span>All rights reserved.</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-5 text-xs text-zinc-500">
+            <span className="hover:text-zinc-950 transition-colors cursor-pointer">Privacy Policy</span>
+            <span className="hover:text-zinc-950 transition-colors cursor-pointer">Terms of Service</span>
+            <span className="hover:text-zinc-950 transition-colors cursor-pointer">Security</span>
+            <span className="hover:text-zinc-950 transition-colors cursor-pointer">System Status</span>
+            <span className="text-zinc-300">•</span>
+            <span className="font-mono text-[11px] text-zinc-400">PST (UTC+8)</span>
+          </div>
+        </div>
       </div>
     </footer>
   );
 }
+
+export default MarketingFooter;
