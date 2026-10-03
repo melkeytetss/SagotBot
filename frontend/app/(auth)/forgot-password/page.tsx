@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Mail, ArrowLeft, ArrowRight, CheckCircle2, KeyRound } from "lucide-react";
 import { useAuthVisuals } from "../layout";
-import { TurnstileWidget } from "@/components/auth/turnstile-widget";
+import { RecaptchaWidget } from "@/components/auth/recaptcha-widget";
 import { GlowBorderCard } from "@/components/ui/glow-border-card";
 import { CandyButton } from "@/components/ui/candy-button";
 
@@ -103,7 +103,7 @@ export default function ForgotPasswordPage() {
             </div>
 
             <div className="pt-2">
-              <TurnstileWidget />
+              <RecaptchaWidget action="forgot_password" />
             </div>
 
             <CandyButton

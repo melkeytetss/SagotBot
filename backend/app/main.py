@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config.settings import settings
 from app.routers.voice import router as voice_router
+from app.routers.security import router as security_router
 
 # Configure logging
 logging.basicConfig(
@@ -43,6 +44,7 @@ app.add_middleware(
 
 # Register API Routers
 app.include_router(voice_router)
+app.include_router(security_router)
 
 
 @app.get("/health", tags=["System Health"])

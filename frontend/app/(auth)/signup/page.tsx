@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Building2, User, Mail, Lock, Phone, ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useAuthVisuals } from "../layout";
-import { TurnstileWidget } from "@/components/auth/turnstile-widget";
+import { RecaptchaWidget } from "@/components/auth/recaptcha-widget";
 import { CandyButton } from "@/components/ui/candy-button";
 import confetti from "canvas-confetti";
 
@@ -236,7 +236,7 @@ export default function SignUpPage() {
               </div>
             </div>
 
-            <TurnstileWidget />
+            <RecaptchaWidget action="signup" />
 
             <div className="flex gap-2.5 pt-2">
               <button

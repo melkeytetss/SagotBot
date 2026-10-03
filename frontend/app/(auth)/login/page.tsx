@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
 import { useAuthVisuals } from "../layout";
-import { TurnstileWidget } from "@/components/auth/turnstile-widget";
+import { RecaptchaWidget } from "@/components/auth/recaptcha-widget";
 import { CandyButton } from "@/components/ui/candy-button";
 import confetti from "canvas-confetti";
 
@@ -13,11 +13,11 @@ export default function LoginPage() {
   const router = useRouter();
   const { setIsPasswordFocused, setIsEmailFocused, setIsTyping, setAuthStatus } = useAuthVisuals();
 
-  const [email, setEmail] = useState("owner@smilesdental.ph");
+  const [email, setEmail] = useState("admin@company.ph");
   const [password, setPassword] = useState("SagotBot2026!");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
-  const [turnstileToken, setTurnstileToken] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -53,8 +53,8 @@ export default function LoginPage() {
   };
 
   const handleQuickDemo = () => {
-    setEmail("dr.reyes@smilesdental.ph");
-    setPassword("Smiles2026!");
+    setEmail("admin@company.ph");
+    setPassword("SagotBot2026!");
     setAuthStatus("success");
     confetti({
       particleCount: 40,
@@ -155,7 +155,7 @@ export default function LoginPage() {
             </label>
           </div>
 
-          <TurnstileWidget onVerify={(token) => setTurnstileToken(token)} />
+          <RecaptchaWidget onVerify={(token) => setRecaptchaToken(token)} action="login" />
 
           <CandyButton
             type="submit"
