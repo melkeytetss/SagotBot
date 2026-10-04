@@ -11,102 +11,94 @@ import {
   X,
   CheckCircle2,
   CalendarCheck,
+  Building2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CandyButton } from "@/components/ui/candy-button";
-import { FlipText } from "@/components/ui/flip-text";
+import { PageHeader } from "@/components/dashboard/page-header";
+import { ConfirmModal } from "@/components/dashboard/confirm-modal";
 import { useIndustry } from "@/context/industry-context";
 import { AppointmentRecord } from "@/lib/industry-presets";
 
 export function CalendarPage() {
-  const { preset, businessName, appointments, setAppointments } = useIndustry();
+  const {
+    businessName,
+    appointments,
+    services,
+    addAppointment,
+    rescheduleAppointment,
+    cancelAppointment,
+  } = useIndustry();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [rescheduleApt, setRescheduleApt] = useState<AppointmentRecord | null>(null);
-  const [selectedStaffFilter, setSelectedStaffFilter] = useState("All");
+  const [cancelTarget, setCancelTarget] = useState<AppointmentRecord | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Form states for manual booking
   const [clientName, setClientName] = useState("");
   const [clientPhone, setClientPhone] = useState("");
   const [service, setService] = useState("");
-  const [staffOrLocation, setStaffOrLocation] = useState("");
   const [timeSlot, setTimeSlot] = useState("10:00 AM - 10:45 AM");
+  const [dateSlot, setDateSlot] = useState("Today");
 
   // Reschedule state
   const [newRescheduleTime, setNewRescheduleTime] = useState("3:00 PM - 3:45 PM");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
+    setTimeout(() => setToastMessage(null), 3500);
   };
 
-  const handleAddAppointment = (e: React.FormEvent) => {
+  const handleAddAppointment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!clientName || !clientPhone) return;
+    if (!clientName.trim() || !clientPhone.trim()) return;
 
-    const newApt: AppointmentRecord = {
-      id: `apt-${Date.now()}`,
-      clientName,
-      clientPhone,
-      service: service || `${preset.bookingType} Session`,
-      staffOrLocation: staffOrLocation || preset.staffLabel,
+    setIsSubmitting(true);
+    const selectedServiceName = service.trim() || (services[0]?.name ?? "Consultation");
+
+    await addAppointment({
+      clientName: clientName.trim(),
+      clientPhone: clientPhone.trim(),
+      service: selectedServiceName,
+      date: dateSlot,
       time: timeSlot,
-      date: "Tomorrow, Friday",
-      status: "confirmed",
-      origin: "Manual Entry",
-    };
+    });
 
-    setAppointments([newApt, ...appointments]);
+    setIsSubmitting(false);
     setModalOpen(false);
     setClientName("");
     setClientPhone("");
     setService("");
-    showToast(`Confirmed for ${clientName} on Google Calendar!`);
+    showToast(`Appointment confirmed and saved for ${clientName}!`);
   };
 
-  const handleConfirmReschedule = () => {
+  const handleConfirmReschedule = async () => {
     if (!rescheduleApt) return;
-    setAppointments((prev) =>
-      prev.map((a) =>
-        a.id === rescheduleApt.id
-          ? { ...a, time: newRescheduleTime, status: "rescheduled" }
-          : a
-      )
-    );
+    setIsSubmitting(true);
+    await rescheduleAppointment(rescheduleApt.id, newRescheduleTime);
+    setIsSubmitting(false);
     showToast(`Rescheduled ${rescheduleApt.clientName} to ${newRescheduleTime}`);
     setRescheduleApt(null);
   };
 
-  const handleCancelAppointment = (id: string, name: string) => {
-    setAppointments((prev) => prev.filter((a) => a.id !== id));
-    showToast(`Cancelled booking for ${name}`);
+  const handleConfirmCancel = async () => {
+    if (!cancelTarget) return;
+    setIsSubmitting(true);
+    await cancelAppointment(cancelTarget.id);
+    setIsSubmitting(false);
+    showToast(`Booking cancelled for ${cancelTarget.clientName}`);
+    setCancelTarget(null);
   };
-
-  const filteredAppointments = appointments.filter((apt) => {
-    if (selectedStaffFilter !== "All" && !apt.staffOrLocation.includes(selectedStaffFilter)) {
-      return false;
-    }
-    return true;
-  });
 
   return (
     <div className="space-y-6">
-      {/* Top Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <FlipText
-            className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-950"
-            duration={1.8}
-          >
-            Calendar & Bookings
-          </FlipText>
-          <p className="text-xs text-zinc-500 mt-1">
-            Real-time synchronization with Google Calendar. Every automated call booking locks the schedule directly.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
+      {/* Top Header */}
+      <PageHeader
+        title="Calendar & Bookings"
+        description="Live appointments synchronized with your business database. Automated calls lock slots directly."
+        action={
           <CandyButton
             onClick={() => setModalOpen(true)}
             variant="black"
@@ -115,8 +107,8 @@ export function CalendarPage() {
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Add Manual Booking</span>
           </CandyButton>
-        </div>
-      </div>
+        }
+      />
 
       {/* Notification Toast */}
       {toastMessage && (
@@ -124,111 +116,119 @@ export function CalendarPage() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-xs flex items-center gap-2 shadow-sm"
+          className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-xs flex items-center gap-2 shadow-xs"
         >
           <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
           <span>{toastMessage}</span>
         </motion.div>
       )}
 
-      {/* Date Navigation & Staff Filter */}
+      {/* Date Navigation Strip */}
       <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
             <button
-              onClick={() => showToast("Showing schedule for Previous Week")}
+              onClick={() => showToast("Navigated to Previous Week")}
               className="p-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-600 hover:text-zinc-950 transition-colors cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
-              onClick={() => showToast("Showing schedule for Next Week")}
+              onClick={() => showToast("Navigated to Next Week")}
               className="p-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-600 hover:text-zinc-950 transition-colors cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
           <span className="text-sm font-semibold text-zinc-950 font-mono">
-            October 2026 • {businessName}
+            {businessName} • {appointments.length} Total Bookings
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-zinc-500">Filter:</span>
-          <select
-            value={selectedStaffFilter}
-            onChange={(e) => setSelectedStaffFilter(e.target.value)}
-            className="px-3 py-1.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-700 focus:outline-none focus:border-zinc-900 cursor-pointer shadow-2xs"
-          >
-            <option value="All">All {preset.staffLabel}s</option>
-            <option value={preset.adminName}>{preset.adminName}</option>
-          </select>
+        <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
+          <span className="w-2 h-2 rounded-full bg-emerald-500" />
+          <span>Calendar Sync: Active</span>
         </div>
       </div>
 
-      {/* Schedule Timeline Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredAppointments.map((apt) => (
-          <div
-            key={apt.id}
-            className="p-5 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-2xs space-y-4 group hover:-translate-y-0.5"
-          >
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                  <CalendarCheck className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-sm text-zinc-950 group-hover:text-blue-600 transition-colors">
-                    {apt.clientName}
-                  </h3>
-                  <p className="text-[10px] font-mono text-zinc-400">{apt.clientPhone}</p>
-                </div>
-              </div>
-
-              <span
-                className={`text-[9px] font-mono font-medium px-2 py-0.5 rounded-full ${
-                  apt.origin === "AI Phone Call"
-                    ? "bg-blue-50 text-blue-700 border border-blue-200"
-                    : "bg-zinc-100 text-zinc-700 border border-zinc-200"
-                }`}
-              >
-                {apt.origin}
-              </span>
-            </div>
-
-            <div className="space-y-1.5 text-xs text-zinc-600">
-              <div className="flex items-center gap-2 font-medium text-zinc-900">
-                <span className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
-                <span className="truncate">{apt.service}</span>
-              </div>
-              <div className="flex items-center gap-2 text-zinc-500 text-[11px]">
-                <User className="w-3.5 h-3.5 text-zinc-400" />
-                <span>{apt.staffOrLocation}</span>
-              </div>
-              <div className="flex items-center gap-2 text-zinc-500 font-mono text-[11px]">
-                <Clock className="w-3.5 h-3.5 text-zinc-400" />
-                <span>{apt.time} ({apt.date})</span>
-              </div>
-            </div>
-
-            <div className="pt-2 border-t border-zinc-100 flex items-center justify-between text-xs">
-              <button
-                onClick={() => setRescheduleApt(apt)}
-                className="text-zinc-600 hover:text-zinc-950 font-medium text-[11px] interactive-press cursor-pointer"
-              >
-                Reschedule
-              </button>
-              <button
-                onClick={() => handleCancelAppointment(apt.id, apt.clientName)}
-                className="text-rose-600 hover:text-rose-700 text-[11px] interactive-press cursor-pointer"
-              >
-                Cancel
-              </button>
-            </div>
+      {/* Appointments List / Grid */}
+      {appointments.length === 0 ? (
+        <div className="p-12 text-center rounded-2xl bg-white border border-zinc-200/80 shadow-2xs space-y-3">
+          <CalendarIcon className="w-8 h-8 text-zinc-400 mx-auto" />
+          <h3 className="text-sm font-semibold text-zinc-950">No Bookings Found</h3>
+          <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+            Inbound calls handled by your receptionist or manual bookings will appear here in real time.
+          </p>
+          <div className="pt-2">
+            <CandyButton variant="black" onClick={() => setModalOpen(true)} className="py-2 px-3.5 text-xs font-semibold">
+              Create Booking
+            </CandyButton>
           </div>
-        ))}
-      </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {appointments.map((apt) => (
+            <div
+              key={apt.id}
+              className="p-5 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-2xs space-y-4 group hover:-translate-y-0.5"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                    <CalendarCheck className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm text-zinc-950 group-hover:text-blue-600 transition-colors">
+                      {apt.clientName}
+                    </h3>
+                    <p className="text-[10px] font-mono text-zinc-400">{apt.clientPhone}</p>
+                  </div>
+                </div>
+
+                <span
+                  className={`text-[9px] font-mono font-medium px-2 py-0.5 rounded-full ${
+                    apt.status === "confirmed"
+                      ? "bg-blue-50 text-blue-700 border border-blue-200"
+                      : apt.status === "rescheduled"
+                      ? "bg-amber-50 text-amber-700 border border-amber-200"
+                      : "bg-zinc-100 text-zinc-700 border border-zinc-200"
+                  }`}
+                >
+                  {apt.origin || "Booking"}
+                </span>
+              </div>
+
+              <div className="space-y-1.5 text-xs text-zinc-600">
+                <div className="flex items-center gap-2 font-medium text-zinc-900">
+                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
+                  <span className="truncate">{apt.service}</span>
+                </div>
+                <div className="flex items-center gap-2 text-zinc-500 font-mono text-[11px]">
+                  <Clock className="w-3.5 h-3.5 text-zinc-400" />
+                  <span>{apt.time} ({apt.date})</span>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-zinc-100 flex items-center justify-between text-xs">
+                <button
+                  type="button"
+                  onClick={() => setRescheduleApt(apt)}
+                  className="text-zinc-600 hover:text-zinc-950 font-medium text-[11px] interactive-press cursor-pointer"
+                >
+                  Reschedule
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCancelTarget(apt)}
+                  className="text-rose-600 hover:text-rose-700 text-[11px] interactive-press cursor-pointer"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* RESCHEDULE MODAL */}
       <AnimatePresence>
@@ -269,7 +269,8 @@ export function CalendarPage() {
                     onChange={(e) => setNewRescheduleTime(e.target.value)}
                     className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none"
                   >
-                    <option>11:00 AM - 11:45 AM</option>
+                    <option>10:00 AM - 10:45 AM</option>
+                    <option>11:30 AM - 12:15 PM</option>
                     <option>1:30 PM - 2:15 PM</option>
                     <option>3:00 PM - 3:45 PM</option>
                     <option>4:30 PM - 5:15 PM</option>
@@ -279,17 +280,21 @@ export function CalendarPage() {
 
               <div className="flex justify-end gap-2 pt-2 border-t border-zinc-100">
                 <button
+                  type="button"
                   onClick={() => setRescheduleApt(null)}
                   className="px-3 py-1.5 rounded-lg border border-zinc-200 hover:bg-zinc-50 text-xs font-medium text-zinc-700"
                 >
-                  Close
+                  Cancel
                 </button>
-                <button
+                <CandyButton
+                  type="button"
+                  variant="black"
                   onClick={handleConfirmReschedule}
-                  className="px-3.5 py-1.5 rounded-lg bg-zinc-950 text-white text-xs font-medium hover:bg-zinc-800"
+                  disabled={isSubmitting}
+                  className="py-1.5 px-4 text-xs font-semibold"
                 >
                   Save Reschedule
-                </button>
+                </CandyButton>
               </div>
             </motion.div>
           </div>
@@ -314,9 +319,7 @@ export function CalendarPage() {
               className="relative w-full max-w-md p-6 rounded-2xl bg-white border border-zinc-200 shadow-xl space-y-4 z-10"
             >
               <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
-                <h3 className="font-bold text-sm text-zinc-950">
-                  Manual {preset.bookingType} Entry
-                </h3>
+                <h3 className="font-bold text-sm text-zinc-950">Add Manual Booking</h3>
                 <button
                   onClick={() => setModalOpen(false)}
                   className="text-zinc-400 hover:text-zinc-700 p-1 rounded-lg"
@@ -327,9 +330,7 @@ export function CalendarPage() {
 
               <form onSubmit={handleAddAppointment} className="space-y-3 text-xs">
                 <div>
-                  <label className="block text-zinc-700 mb-1 font-medium">
-                    {preset.clientLabel} Full Name
-                  </label>
+                  <label className="block text-zinc-700 mb-1 font-medium">Customer Full Name</label>
                   <input
                     type="text"
                     required
@@ -341,7 +342,7 @@ export function CalendarPage() {
                 </div>
 
                 <div>
-                  <label className="block text-zinc-700 mb-1 font-medium">Contact Number</label>
+                  <label className="block text-zinc-700 mb-1 font-medium">Phone Number</label>
                   <input
                     type="tel"
                     required
@@ -354,14 +355,28 @@ export function CalendarPage() {
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-zinc-700 mb-1 font-medium">Service / Request</label>
-                    <input
-                      type="text"
-                      value={service}
-                      onChange={(e) => setService(e.target.value)}
-                      placeholder="e.g. Consultation"
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none focus:border-zinc-900"
-                    />
+                    <label className="block text-zinc-700 mb-1 font-medium">Service</label>
+                    {services.length > 0 ? (
+                      <select
+                        value={service}
+                        onChange={(e) => setService(e.target.value)}
+                        className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none"
+                      >
+                        {services.map((s) => (
+                          <option key={s.id} value={s.name}>
+                            {s.name}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type="text"
+                        value={service}
+                        onChange={(e) => setService(e.target.value)}
+                        placeholder="e.g. Consultation"
+                        className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none"
+                      />
+                    )}
                   </div>
 
                   <div>
@@ -373,21 +388,11 @@ export function CalendarPage() {
                     >
                       <option>10:00 AM - 10:45 AM</option>
                       <option>11:30 AM - 12:15 PM</option>
+                      <option>1:30 PM - 2:15 PM</option>
                       <option>2:00 PM - 2:45 PM</option>
                       <option>4:00 PM - 4:45 PM</option>
                     </select>
                   </div>
-                </div>
-
-                <div>
-                  <label className="block text-zinc-700 mb-1 font-medium">{preset.staffLabel}</label>
-                  <input
-                    type="text"
-                    value={staffOrLocation}
-                    onChange={(e) => setStaffOrLocation(e.target.value)}
-                    placeholder={`e.g. ${preset.adminName}`}
-                    className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 focus:outline-none focus:border-zinc-900"
-                  />
                 </div>
 
                 <div className="pt-2 flex justify-end gap-2 border-t border-zinc-100">
@@ -401,6 +406,7 @@ export function CalendarPage() {
                   <CandyButton
                     type="submit"
                     variant="black"
+                    disabled={isSubmitting}
                     className="py-1.5 px-4 text-xs font-semibold"
                   >
                     Confirm Booking
@@ -411,6 +417,18 @@ export function CalendarPage() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* CANCELLATION CONFIRM MODAL */}
+      <ConfirmModal
+        open={Boolean(cancelTarget)}
+        title="Cancel Appointment"
+        description={`Are you sure you want to cancel the booking for ${cancelTarget?.clientName}?`}
+        confirmLabel="Cancel Appointment"
+        destructive={true}
+        loading={isSubmitting}
+        onConfirm={handleConfirmCancel}
+        onCancel={() => setCancelTarget(null)}
+      />
     </div>
   );
 }

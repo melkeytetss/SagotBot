@@ -7,14 +7,15 @@ import { Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
 import { useAuthVisuals } from "../layout";
 import { RecaptchaWidget } from "@/components/auth/recaptcha-widget";
 import { CandyButton } from "@/components/ui/candy-button";
+import { createClient } from "@/lib/supabase/client";
 import confetti from "canvas-confetti";
 
 export default function LoginPage() {
   const router = useRouter();
   const { setIsPasswordFocused, setIsEmailFocused, setIsTyping, setAuthStatus } = useAuthVisuals();
 
-  const [email, setEmail] = useState("admin@company.ph");
-  const [password, setPassword] = useState("SagotBot2026!");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [recaptchaToken, setRecaptchaToken] = useState("");
@@ -27,47 +28,45 @@ export default function LoginPage() {
       setErrorMsg("Security verification is loading, please wait.");
       return;
     }
+    if (!email || !password) {
+      setErrorMsg("Please enter both email and password.");
+      return;
+    }
+
     setErrorMsg("");
     setLoading(true);
     setAuthStatus("loading");
 
-    setTimeout(() => {
-      if (!password || password.length < 6) {
-        setErrorMsg("Please enter a valid password (minimum 6 characters).");
-        setLoading(false);
-        setAuthStatus("error");
-        setTimeout(() => setAuthStatus("idle"), 2500);
-        return;
-      }
-
-      setAuthStatus("success");
-      setLoading(false);
-
-      confetti({
-        particleCount: 60,
-        spread: 60,
-        origin: { y: 0.6 },
-        colors: ["#2563eb", "#09090b", "#7c3aed"],
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
       });
 
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 800);
-    }, 800);
-  };
+      if (error) {
+        setErrorMsg(error.message);
+        setAuthStatus("error");
+        setTimeout(() => setAuthStatus("idle"), 2500);
+      } else {
+        setAuthStatus("success");
 
-  const handleQuickDemo = () => {
-    setEmail("admin@company.ph");
-    setPassword("SagotBot2026!");
-    setRecaptchaToken("recaptcha-demo-bypass-token");
-    setAuthStatus("success");
-    confetti({
-      particleCount: 40,
-      spread: 50,
-      origin: { y: 0.7 },
-      colors: ["#2563eb", "#09090b"],
-    });
-    setTimeout(() => router.push("/dashboard"), 500);
+        confetti({
+          particleCount: 60,
+          spread: 60,
+          origin: { y: 0.6 },
+          colors: ["#2563eb", "#09090b", "#7c3aed"],
+        });
+
+        router.push("/dashboard");
+        router.refresh();
+      }
+    } catch {
+      setErrorMsg("An unexpected error occurred during sign in. Please try again.");
+      setAuthStatus("error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -82,7 +81,7 @@ export default function LoginPage() {
 
         {errorMsg && (
           <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-rose-600" />
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0" />
             <span>{errorMsg}</span>
           </div>
         )}
@@ -109,7 +108,7 @@ export default function LoginPage() {
                   setIsTyping(false);
                 }}
                 placeholder="you@company.ph"
-                className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all"
+                className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all"
               />
             </div>
           </div>
@@ -135,7 +134,7 @@ export default function LoginPage() {
                 onFocus={() => setIsPasswordFocused(true)}
                 onBlur={() => setIsPasswordFocused(false)}
                 placeholder="••••••••••••"
-                className="w-full pl-10 pr-11 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all font-mono"
+                className="w-full pl-10 pr-11 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all font-mono"
               />
               <button
                 type="button"
@@ -179,15 +178,7 @@ export default function LoginPage() {
           </CandyButton>
         </form>
 
-        <div className="pt-2 text-center space-y-2">
-          <button
-            type="button"
-            onClick={handleQuickDemo}
-            className="text-xs text-zinc-400 hover:text-zinc-700 transition-colors cursor-pointer"
-          >
-            Quick demo: Dr. Reyes (Smiles Dental)
-          </button>
-
+        <div className="pt-2 text-center">
           <p className="text-xs text-zinc-500">
             Don&apos;t have an account?{" "}
             <Link href="/signup" className="text-blue-600 hover:text-blue-700 font-medium">

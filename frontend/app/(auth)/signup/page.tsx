@@ -7,6 +7,7 @@ import { Building2, User, Mail, Lock, Phone, ArrowRight, ArrowLeft, CheckCircle2
 import { useAuthVisuals } from "../layout";
 import { RecaptchaWidget } from "@/components/auth/recaptcha-widget";
 import { CandyButton } from "@/components/ui/candy-button";
+import { createClient } from "@/lib/supabase/client";
 import confetti from "canvas-confetti";
 
 export default function SignUpPage() {
@@ -20,9 +21,9 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Step 2: Clinic Workspace Details
+  // Step 2: Clinic/Business Workspace Details
   const [businessName, setBusinessName] = useState("");
-  const [businessType, setBusinessType] = useState<"dental" | "salon" | "restaurant" | "general">("dental");
+  const [businessType, setBusinessType] = useState<"clinic" | "salon" | "restaurant" | "services" | "general">("clinic");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [recaptchaToken, setRecaptchaToken] = useState("");
 
@@ -45,18 +46,54 @@ export default function SignUpPage() {
 
   const handleCompleteSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!recaptchaToken) {
+      setErrorMsg("Security verification is loading, please wait.");
+      return;
+    }
     if (!businessName || !phoneNumber) {
       setErrorMsg("Please provide your business name and phone number.");
       return;
     }
 
+    setErrorMsg("");
     setLoading(true);
     setAuthStatus("loading");
 
-    setTimeout(() => {
-      setLoading(false);
-      setAuthStatus("success");
+    try {
+      const supabase = createClient();
 
+      // 1. Sign up user
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
+        email: email.trim(),
+        password: password,
+        options: {
+          data: {
+            full_name: fullName.trim(),
+          },
+        },
+      });
+
+      if (signUpError) {
+        setErrorMsg(signUpError.message);
+        setAuthStatus("error");
+        setLoading(false);
+        return;
+      }
+
+      // If user session is active, provision business
+      if (authData?.user) {
+        const { error: rpcError } = await supabase.rpc("create_business_for_user", {
+          p_name: businessName.trim(),
+          p_business_type: businessType,
+          p_phone: phoneNumber.trim(),
+        });
+
+        if (rpcError) {
+          console.error("Failed to provision initial business record:", rpcError);
+        }
+      }
+
+      setAuthStatus("success");
       confetti({
         particleCount: 80,
         spread: 70,
@@ -64,10 +101,14 @@ export default function SignUpPage() {
         colors: ["#2563eb", "#09090b", "#7c3aed"],
       });
 
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 800);
-    }, 1000);
+      router.push("/dashboard");
+      router.refresh();
+    } catch {
+      setErrorMsg("An unexpected error occurred while creating your account. Please try again.");
+      setAuthStatus("error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -91,13 +132,13 @@ export default function SignUpPage() {
           <p className="text-xs text-zinc-500 mt-1">
             {step === 1
               ? "Start your 14-day free trial. No credit card required."
-              : "Where should SagotBot route and schedule calls?"}
+              : "Tell us about your business to configure your receptionist."}
           </p>
         </div>
 
         {errorMsg && (
           <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-rose-600" />
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0" />
             <span>{errorMsg}</span>
           </div>
         )}
@@ -116,7 +157,7 @@ export default function SignUpPage() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Maria Santos"
-                  className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -141,7 +182,7 @@ export default function SignUpPage() {
                     setIsTyping(false);
                   }}
                   placeholder="you@company.ph"
-                  className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -160,7 +201,7 @@ export default function SignUpPage() {
                   onFocus={() => setIsPasswordFocused(true)}
                   onBlur={() => setIsPasswordFocused(false)}
                   placeholder="Minimum 8 characters"
-                  className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all font-mono"
+                  className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all font-mono"
                 />
               </div>
             </div>
@@ -188,7 +229,7 @@ export default function SignUpPage() {
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
                   placeholder="Acme Studio / Santos & Partners"
-                  className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -199,10 +240,11 @@ export default function SignUpPage() {
               </label>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { id: "services", label: "Services / Studio" },
                   { id: "clinic", label: "Clinic / Health" },
                   { id: "salon", label: "Salon / Spa" },
-                  { id: "general", label: "Retail / Other" },
+                  { id: "restaurant", label: "Restaurant / Cafe" },
+                  { id: "services", label: "Studio / Services" },
+                  { id: "general", label: "General SME" },
                 ].map((item) => (
                   <button
                     type="button"
@@ -232,7 +274,7 @@ export default function SignUpPage() {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="+63 917 123 4567"
-                  className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all font-mono"
+                  className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all font-mono"
                 />
               </div>
             </div>
